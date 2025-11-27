@@ -8,6 +8,17 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   title: "Lockdrop - Guaranteed by math, not corporations",
   description: "Lockdrop: Decentralized time-capsule for time-locked audio/video messages with blockchain-enforced privacy",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
+  manifest: "/site.webmanifest",
+  appleWebApp: {
+    title: "Lockdrop",
+  },
 };
 
 export default function RootLayout({
@@ -16,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased bg-gray-50 flex flex-col min-h-screen">
+    <html lang="en" className="dark">
+      <body className="antialiased bg-gray-900 flex flex-col min-h-screen">
         <SkipToContent />
         <ToastProvider>
           <WalletProvider>

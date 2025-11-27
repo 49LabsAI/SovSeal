@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import type { MediaFile } from '@/types/media';
 import { formatFileSize, formatDuration } from '@/utils/mediaValidation';
 
@@ -31,7 +31,15 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
     };
   }, [mediaFile.blob]);
 
-  // Update current time
+  // Sync play state with media element
+  const syncPlayState = useCallback(() => {
+    const media = mediaRef.current;
+    if (media) {
+      setIsPlaying(!media.paused);
+    }
+  }, []);
+
+  // Update current time and sync with media element
   useEffect(() => {
     const media = mediaRef.current;
     if (!media) return;
@@ -46,29 +54,44 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
 
     const handleEnded = () => {
       setIsPlaying(false);
+      setCurrentTime(0);
+    };
+
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
     };
 
     media.addEventListener('timeupdate', handleTimeUpdate);
     media.addEventListener('loadedmetadata', handleLoadedMetadata);
     media.addEventListener('ended', handleEnded);
+    media.addEventListener('play', handlePlay);
+    media.addEventListener('pause', handlePause);
+
+    // Initial sync
+    syncPlayState();
 
     return () => {
       media.removeEventListener('timeupdate', handleTimeUpdate);
       media.removeEventListener('loadedmetadata', handleLoadedMetadata);
       media.removeEventListener('ended', handleEnded);
+      media.removeEventListener('play', handlePlay);
+      media.removeEventListener('pause', handlePause);
     };
-  }, []);
+  }, [mediaUrl, syncPlayState]);
 
   const handlePlayPause = () => {
     const media = mediaRef.current;
     if (!media) return;
 
-    if (isPlaying) {
-      media.pause();
-    } else {
+    if (media.paused) {
       media.play();
+    } else {
+      media.pause();
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,18 +115,18 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-6">
+    <div className="space-y-4 rounded-lg border border-gray-700 bg-gray-800 p-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Media Preview</h3>
-          <p className="text-sm text-gray-600">{mediaFile.name || 'Recorded Media'}</p>
+          <h3 className="text-lg font-semibold text-gray-100">Media Preview</h3>
+          <p className="text-sm text-gray-400">{mediaFile.name || 'Recorded Media'}</p>
         </div>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-500 hover:text-gray-300"
             aria-label="Close preview"
           >
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,7 +142,7 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
       </div>
 
       {/* Media Player */}
-      <div className="rounded-lg bg-gray-900">
+      <div className="rounded-lg bg-gray-900 overflow-hidden">
         {mediaUrl && mediaFile.type === 'video' ? (
           <video
             ref={mediaRef as React.RefObject<HTMLVideoElement>}
@@ -130,7 +153,7 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
         ) : (
           <div className="flex items-center justify-center p-12">
             <svg
-              className="h-24 w-24 text-gray-400"
+              className="h-24 w-24 text-gray-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -160,15 +183,16 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
           <input
             type="range"
             min="0"
-            max={duration}
+            max={duration || 100}
+            step="0.1"
             value={currentTime}
             onChange={handleSeek}
-            className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
+            className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-700"
             style={{
-              background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${progress}%, #E5E7EB ${progress}%, #E5E7EB 100%)`,
+              background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${progress}%, #374151 ${progress}%, #374151 100%)`,
             }}
           />
-          <div className="flex justify-between text-xs text-gray-600">
+          <div className="flex justify-between text-xs text-gray-400">
             <span>{formatDuration(currentTime)}</span>
             <span>{formatDuration(duration)}</span>
           </div>
@@ -198,7 +222,7 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
             {/* Volume Control */}
             <div className="flex items-center space-x-2">
               <svg
-                className="h-5 w-5 text-gray-600"
+                className="h-5 w-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -217,7 +241,10 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
                 step="0.1"
                 value={volume}
                 onChange={handleVolumeChange}
-                className="h-2 w-20 cursor-pointer appearance-none rounded-lg bg-gray-200"
+                className="h-2 w-20 cursor-pointer appearance-none rounded-lg bg-gray-700"
+                style={{
+                  background: `linear-gradient(to right, #3B82F6 0%, #3B82F6 ${volume * 100}%, #374151 ${volume * 100}%, #374151 100%)`,
+                }}
                 aria-label="Volume"
               />
             </div>
@@ -226,29 +253,29 @@ export function MediaPreview({ mediaFile, onClose }: MediaPreviewProps) {
       </div>
 
       {/* Media Metadata - Requirement 3.3 */}
-      <div className="rounded-lg bg-gray-50 p-4">
-        <h4 className="mb-2 text-sm font-semibold text-gray-900">Media Information</h4>
+      <div className="rounded-lg bg-gray-900 p-4">
+        <h4 className="mb-2 text-sm font-semibold text-gray-100">Media Information</h4>
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div>
-            <span className="text-gray-600">Type:</span>
-            <span className="ml-2 font-medium text-gray-900">
+            <span className="text-gray-400">Type:</span>
+            <span className="ml-2 font-medium text-gray-200">
               {mediaFile.type === 'video' ? 'Video' : 'Audio'}
             </span>
           </div>
           <div>
-            <span className="text-gray-600">Size:</span>
-            <span className="ml-2 font-medium text-gray-900">
+            <span className="text-gray-400">Size:</span>
+            <span className="ml-2 font-medium text-gray-200">
               {formatFileSize(mediaFile.size)}
             </span>
           </div>
           <div>
-            <span className="text-gray-600">Format:</span>
-            <span className="ml-2 font-medium text-gray-900">{mediaFile.mimeType}</span>
+            <span className="text-gray-400">Format:</span>
+            <span className="ml-2 font-medium text-gray-200">{mediaFile.mimeType}</span>
           </div>
           {duration > 0 && (
             <div>
-              <span className="text-gray-600">Duration:</span>
-              <span className="ml-2 font-medium text-gray-900">
+              <span className="text-gray-400">Duration:</span>
+              <span className="ml-2 font-medium text-gray-200">
                 {formatDuration(duration)}
               </span>
             </div>

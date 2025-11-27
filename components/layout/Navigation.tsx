@@ -24,7 +24,7 @@ export function Navigation() {
   ];
 
   return (
-    <nav className="border-b border-gray-200 bg-white shadow-sm" role="navigation" aria-label="Main navigation">
+    <nav className="border-b border-gray-800 bg-gray-900 shadow-sm" role="navigation" aria-label="Main navigation">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -44,10 +44,10 @@ export function Navigation() {
                   href={link.href}
                   className={`text-xs md:text-sm font-medium transition-colors px-2 py-1 rounded ${
                     isActive
-                      ? "text-blue-600 bg-blue-50"
+                      ? "text-blue-400 bg-blue-900"
                       : isDisabled
-                        ? "pointer-events-none cursor-not-allowed text-gray-400"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        ? "pointer-events-none cursor-not-allowed text-gray-600"
+                        : "text-gray-300 hover:text-gray-100 hover:bg-gray-800"
                   }`}
                   aria-disabled={isDisabled}
                   aria-current={isActive ? "page" : undefined}

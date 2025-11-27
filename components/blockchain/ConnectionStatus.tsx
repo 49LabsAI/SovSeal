@@ -16,7 +16,7 @@ export function ConnectionStatus() {
   }
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-yellow-500 text-white px-4 py-3 shadow-lg">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-yellow-600 text-white px-4 py-3 shadow-lg">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
           <svg
@@ -45,7 +45,7 @@ export function ConnectionStatus() {
         {!isReconnecting && (
           <button
             onClick={reconnect}
-            className="px-4 py-2 bg-white text-yellow-600 rounded-lg font-medium hover:bg-yellow-50 transition-colors"
+            className="px-4 py-2 bg-gray-900 text-yellow-400 rounded-lg font-medium hover:bg-gray-800 transition-colors"
           >
             Reconnect
           </button>

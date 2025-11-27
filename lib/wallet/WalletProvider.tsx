@@ -58,11 +58,73 @@ export function WalletProvider({ children }: WalletProviderProps) {
     new Set()
   );
 
-  // Clear any persisted connection data on mount for security
+  // Try to restore wallet connection on mount
   useEffect(() => {
     if (!isInitialMount.current) return;
     isInitialMount.current = false;
-    localStorage.removeItem(STORAGE_KEY);
+
+    const attemptReconnect = async () => {
+      try {
+        // Check if wallet was previously connected
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return;
+
+        const { wasConnected } = JSON.parse(stored);
+        if (!wasConnected) return;
+
+        // Check if ethereum provider is available
+        if (typeof window === "undefined" || !window.ethereum) return;
+
+        // Try to get accounts without triggering popup
+        const accounts = await window.ethereum.request({
+          method: "eth_accounts",
+        }) as string[];
+
+        if (accounts && accounts.length > 0) {
+          console.log("[WalletProvider] Restoring previous connection");
+          
+          const walletName = window.ethereum.isTalisman
+            ? "Talisman"
+            : window.ethereum.isMetaMask
+            ? "MetaMask"
+            : "Ethereum Wallet";
+
+          const selectedAddress = accounts[0];
+          const selectedAccount = {
+            address: selectedAddress,
+            meta: {
+              name: `${walletName} Account`,
+              source: walletName,
+            },
+            type: "ethereum" as const,
+          };
+
+          const allAccounts = accounts.map((addr, index) => ({
+            address: addr,
+            meta: {
+              name: `${walletName} Account ${index + 1}`,
+              source: walletName,
+            },
+            type: "ethereum" as const,
+          }));
+
+          setState({
+            isConnected: true,
+            address: selectedAddress,
+            accounts: allAccounts,
+            selectedAccount,
+          });
+
+          setIsHealthy(true);
+        }
+      } catch (error) {
+        console.log("[WalletProvider] Could not restore connection:", error);
+        // Clear invalid stored state
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    };
+
+    attemptReconnect();
   }, []);
 
   // Listen for account changes
@@ -194,6 +256,9 @@ export function WalletProvider({ children }: WalletProviderProps) {
         accounts: allAccounts,
         selectedAccount,
       });
+
+      // Persist connection state
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ wasConnected: true }));
 
       setIsHealthy(true);
     } catch (error) {

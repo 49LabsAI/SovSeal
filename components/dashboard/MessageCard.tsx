@@ -22,11 +22,11 @@ export function MessageCard({ message, type, onUnlock }: MessageCardProps) {
   const getStatusColor = (status: MessageStatus): string => {
     switch (status) {
       case "Locked":
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-700 text-gray-200";
       case "Unlockable":
-        return "bg-green-100 text-green-800";
+        return "bg-green-900 text-green-200";
       case "Unlocked":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-900 text-blue-200";
     }
   };
 
@@ -49,20 +49,20 @@ export function MessageCard({ message, type, onUnlock }: MessageCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-700">
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-400">
               {type === "sent" ? "To:" : "From:"}
             </span>
-            <span className="font-mono text-sm">
+            <span className="font-mono text-sm text-gray-200">
               {formatAddress(
                 type === "sent" ? message.recipient : message.sender
               )}
             </span>
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-gray-500">
             Created: {formatTimestamp(message.createdAt)}
           </div>
         </div>
@@ -75,8 +75,8 @@ export function MessageCard({ message, type, onUnlock }: MessageCardProps) {
         </span>
       </div>
 
-      <div className="border-t pt-4">
-        <div className="text-sm text-gray-600 mb-3">
+      <div className="border-t border-gray-700 pt-4">
+        <div className="text-sm text-gray-300 mb-3">
           {isLocked && (
             <div className="flex items-center gap-2">
               <svg
@@ -136,7 +136,7 @@ export function MessageCard({ message, type, onUnlock }: MessageCardProps) {
         </div>
 
         {message.metadata && (
-          <div className="text-xs text-gray-500 mb-3">
+          <div className="text-xs text-gray-400 mb-3">
             <div>Type: {message.metadata.mimeType}</div>
             {message.metadata.fileSize && (
               <div>
@@ -159,7 +159,7 @@ export function MessageCard({ message, type, onUnlock }: MessageCardProps) {
         )}
 
         {isLocked && type === "received" && (
-          <div className="text-center text-sm text-gray-500 py-2">
+          <div className="text-center text-sm text-gray-400 py-2">
             Message will be unlockable on{" "}
             {formatTimestamp(message.unlockTimestamp)}
           </div>

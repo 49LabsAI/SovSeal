@@ -6,7 +6,6 @@ import {
   validateFileType,
   validateFileSize,
   getMediaDuration,
-  formatFileSize,
 } from '@/utils/mediaValidation';
 
 interface MediaUploaderProps {
@@ -20,14 +19,13 @@ interface MediaUploaderProps {
  */
 export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   /**
-   * Process and validate uploaded file
+   * Process and validate uploaded file - directly passes to parent
    * Requirements: 3.1, 3.2, 3.3
    */
   const processFile = async (file: File) => {
@@ -61,7 +59,8 @@ export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
         name: file.name,
       };
 
-      setSelectedFile(mediaFile);
+      // Directly pass to parent - no confirmation step
+      onFileSelect(mediaFile);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to process file';
       setError(errorMessage);
@@ -70,6 +69,10 @@ export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
       }
     } finally {
       setIsProcessing(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -115,28 +118,6 @@ export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
   };
 
   /**
-   * Handle file selection confirmation
-   */
-  const handleUseFile = () => {
-    if (selectedFile) {
-      onFileSelect(selectedFile);
-      handleClear();
-    }
-  };
-
-  /**
-   * Clear selection
-   */
-  const handleClear = () => {
-    setSelectedFile(null);
-    setWarning(null);
-    setError(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
-  /**
    * Open file picker
    */
   const handleBrowseClick = () => {
@@ -156,14 +137,14 @@ export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
 
       {/* Error Display */}
       {error && (
-        <div className="rounded-lg border border-red-300 bg-red-50 p-4">
-          <p className="text-sm text-red-800">{error}</p>
+        <div className="rounded-lg border border-red-700 bg-red-900 p-4">
+          <p className="text-sm text-red-200">{error}</p>
         </div>
       )}
 
       {/* Warning Display - Requirement 3.2 */}
       {warning && (
-        <div className="rounded-lg border border-yellow-300 bg-yellow-50 p-4">
+        <div className="rounded-lg border border-yellow-700 bg-yellow-900 p-4">
           <div className="flex items-start">
             <svg
               className="h-5 w-5 flex-shrink-0 text-yellow-400"
@@ -176,140 +157,61 @@ export function MediaUploader({ onFileSelect, onError }: MediaUploaderProps) {
                 clipRule="evenodd"
               />
             </svg>
-            <p className="ml-3 text-sm text-yellow-700">{warning}</p>
+            <p className="ml-3 text-sm text-yellow-300">{warning}</p>
           </div>
         </div>
       )}
 
       {/* Drag and Drop Area */}
-      {!selectedFile && (
-        <div
-          onDragEnter={handleDragEnter}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-          className={`relative rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
-            isDragging
-              ? 'border-blue-500 bg-blue-50'
-              : 'border-gray-300 bg-gray-50 hover:border-gray-400'
-          } ${isProcessing ? 'pointer-events-none opacity-50' : ''}`}
-        >
-          <div className="flex flex-col items-center space-y-4">
-            <svg
-              className="h-12 w-12 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-              />
-            </svg>
+      <div
+        onDragEnter={handleDragEnter}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={`relative rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
+          isDragging
+            ? 'border-blue-500 bg-blue-900/20'
+            : 'border-gray-600 bg-gray-900 hover:border-gray-500'
+        } ${isProcessing ? 'pointer-events-none opacity-50' : ''}`}
+      >
+        <div className="flex flex-col items-center space-y-4">
+          <svg
+            className="h-12 w-12 text-gray-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            />
+          </svg>
 
-            <div>
-              <p className="text-lg font-medium text-gray-900">
-                {isProcessing ? 'Processing file...' : 'Drop your file here'}
-              </p>
-              <p className="mt-1 text-sm text-gray-600">or</p>
-            </div>
+          <div>
+            <p className="text-lg font-medium text-gray-200">
+              {isProcessing ? 'Processing file...' : 'Drop your file here'}
+            </p>
+            <p className="mt-1 text-sm text-gray-400">or</p>
+          </div>
 
-            <button
-              onClick={handleBrowseClick}
-              disabled={isProcessing}
-              className="rounded-lg bg-blue-600 px-6 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-            >
-              Browse Files
-            </button>
+          <button
+            onClick={handleBrowseClick}
+            disabled={isProcessing}
+            className="rounded-lg bg-blue-600 px-6 py-2 font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            Browse Files
+          </button>
 
-            <div className="text-xs text-gray-500">
-              <p>Supported formats:</p>
-              <p className="mt-1">Audio: MP3, WAV, OGG</p>
-              <p>Video: MP4, WEBM, MOV</p>
-              <p className="mt-2">Maximum size: 100 MB</p>
-            </div>
+          <div className="text-xs text-gray-500">
+            <p>Supported formats:</p>
+            <p className="mt-1">Audio: MP3, WAV, OGG</p>
+            <p>Video: MP4, WEBM, MOV</p>
+            <p className="mt-2">Maximum size: 100 MB</p>
           </div>
         </div>
-      )}
-
-      {/* File Preview - Requirements 3.3, 3.5 */}
-      {selectedFile && (
-        <div className="rounded-lg border border-gray-200 bg-white p-4">
-          <div className="flex items-start justify-between">
-            <div className="flex items-start space-x-4">
-              {/* File Icon */}
-              <div className="flex-shrink-0">
-                {selectedFile.type === 'video' ? (
-                  <svg
-                    className="h-12 w-12 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-12 w-12 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-                    />
-                  </svg>
-                )}
-              </div>
-
-              {/* File Metadata - Requirement 3.5 */}
-              <div className="flex-1">
-                <p className="font-medium text-gray-900">{selectedFile.name}</p>
-                <div className="mt-1 space-y-1 text-sm text-gray-600">
-                  <p>Type: {selectedFile.type}</p>
-                  <p>Size: {formatFileSize(selectedFile.size)}</p>
-                  {selectedFile.duration && (
-                    <p>
-                      Duration:{' '}
-                      {Math.floor(selectedFile.duration / 60)}:
-                      {Math.floor(selectedFile.duration % 60)
-                        .toString()
-                        .padStart(2, '0')}
-                    </p>
-                  )}
-                  <p className="text-xs">MIME: {selectedFile.mimeType}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-shrink-0 space-x-2">
-              <button
-                onClick={handleClear}
-                className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
-              >
-                Remove
-              </button>
-              <button
-                onClick={handleUseFile}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-              >
-                Use File
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

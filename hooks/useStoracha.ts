@@ -23,9 +23,28 @@ export function useStoracha() {
     setAuthState(storachaService.getAuthState());
   }, []);
 
-  // Check auth state on mount
+  // Check auth state on mount and verify connection
   useEffect(() => {
-    refreshAuthState();
+    const checkAndRefresh = async () => {
+      refreshAuthState();
+      
+      // Verify the connection is actually working
+      try {
+        const status = await storachaService.checkConnection();
+        
+        if (status.canRestore) {
+          console.log("Storacha: Connection restored successfully");
+        } else if (status.needsSpace) {
+          console.log("Storacha: Authenticated but needs space creation");
+        } else if (status.needsAuth) {
+          console.log("Storacha: Needs authentication");
+        }
+      } catch (error) {
+        console.warn("Storacha: Connection check failed:", error);
+      }
+    };
+    
+    checkAndRefresh();
   }, [refreshAuthState]);
 
   // Login with email

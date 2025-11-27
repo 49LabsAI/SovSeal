@@ -148,7 +148,7 @@ export function SentMessages({ address }: SentMessagesProps) {
     return (
       <div className="flex justify-center items-center py-12">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        <span className="ml-3 text-gray-600">Loading sent messages...</span>
+        <span className="ml-3 text-gray-300">Loading sent messages...</span>
       </div>
     );
   }
@@ -191,10 +191,10 @@ export function SentMessages({ address }: SentMessagesProps) {
     <div>
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-100">
             Sent Messages
           </h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-400 mt-1">
             {filteredAndSortedMessages.length} message
             {filteredAndSortedMessages.length !== 1 ? "s" : ""}
             {statusFilter !== "All" && ` (${statusFilter})`}
@@ -202,7 +202,7 @@ export function SentMessages({ address }: SentMessagesProps) {
         </div>
         <button
           onClick={loadMessages}
-          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          className="text-sm text-blue-400 hover:text-blue-300 font-medium"
         >
           Refresh
         </button>

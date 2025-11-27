@@ -1,6 +1,10 @@
-# Lockdrop
-
-**Guaranteed by math, not corporations**
+<div align="center">
+  <img src="public/logo.png" alt="Lockdrop Logo" width="120" height="120" />
+  
+  # Lockdrop
+  
+  **Guaranteed by math, not corporations**
+</div>
 
 Lockdrop is a decentralized time-capsule application that enables users to create time-locked audio/video messages using client-side encryption, IPFS storage, and Polkadot blockchain.
 
@@ -82,6 +86,17 @@ Before you begin, ensure you have the following installed and configured:
 - **Storacha Network account** (email-based authentication - [Learn more](https://storacha.network/))
 - **Passet Hub testnet tokens (PAS)** from faucet: https://faucet.polkadot.io/paseo
 
+### Connection Improvements ✨ NEW
+
+Lockdrop now features **persistent connections** that survive page refreshes and browser restarts:
+
+- **Wallet connections persist** - Connect once, stay connected
+- **Storacha authentication persists** - No need to re-verify email
+- **Visual connection status** - Always know what's connected
+- **Partial state recovery** - Resume setup if interrupted
+
+See the [User Connection Guide](docs/USER_CONNECTION_GUIDE.md) for details.
+
 ### Storacha Setup
 
 Lockdrop uses Storacha Network for decentralized storage. To enable uploads:
@@ -90,8 +105,8 @@ Lockdrop uses Storacha Network for decentralized storage. To enable uploads:
 2. Navigate to **Settings** in the app
 3. Enter your email address and click "Connect with Storacha"
 4. Check your email and click the verification link
-5. Select a payment plan (free tier available: 5GB storage + egress)
-6. Your space will be created automatically
+5. Your space will be created automatically
+6. Connection persists across sessions - no need to reconnect!
 
 
 

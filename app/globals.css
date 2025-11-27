@@ -3,19 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary-blue: #2563eb;
-  --primary-purple: #9333ea;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary-blue: #3b82f6;
+  --primary-purple: #a855f7;
   --success-green: #10b981;
   --error-red: #ef4444;
   --warning-yellow: #f59e0b;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
+    --primary-blue: #2563eb;
+    --primary-purple: #9333ea;
   }
 }
 
@@ -49,15 +51,15 @@ body {
   }
   
   .btn-secondary {
-    @apply bg-white text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium border border-gray-300 shadow-sm;
+    @apply bg-gray-800 text-gray-200 py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium border border-gray-700 shadow-sm;
   }
   
   .card {
-    @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100;
+    @apply bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-700;
   }
   
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-2 bg-gray-800 text-gray-100 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
   }
 }
 

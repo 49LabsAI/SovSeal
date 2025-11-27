@@ -49,17 +49,17 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
     stopRecording();
   };
 
-  const handleSaveRecording = () => {
+  // Auto-save recording when blob is available (no confirmation step)
+  useEffect(() => {
     if (recordingState.blob) {
       onRecordingComplete(recordingState.blob, mediaType);
-      clearRecording();
+      // Clear after a short delay to avoid state conflicts
+      const timer = setTimeout(() => {
+        clearRecording();
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  };
-
-  const handleClearRecording = () => {
-    clearRecording();
-    setError(null);
-  };
+  }, [recordingState.blob]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const formatDuration = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -70,7 +70,7 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
   // Show upload-only fallback for iOS Safari
   if (isIOSSafari) {
     return (
-      <div className="rounded-lg border border-yellow-300 bg-yellow-50 p-4">
+      <div className="rounded-lg border border-yellow-700 bg-yellow-900 p-4">
         <div className="flex items-start">
           <div className="flex-shrink-0">
             <svg
@@ -86,10 +86,10 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-yellow-800">
+            <h3 className="text-sm font-medium text-yellow-200">
               Recording not supported on iOS Safari
             </h3>
-            <p className="mt-2 text-sm text-yellow-700">
+            <p className="mt-2 text-sm text-yellow-300">
               Media recording is not fully supported on iOS Safari. Please use the file
               upload option instead, or try using a different browser.
             </p>
@@ -109,7 +109,7 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
             className={`flex-1 rounded-lg px-4 py-2 font-medium transition-colors ${
               mediaType === 'audio'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
           >
             Audio Only
@@ -119,7 +119,7 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
             className={`flex-1 rounded-lg px-4 py-2 font-medium transition-colors ${
               mediaType === 'video'
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
             }`}
           >
             Video + Audio
@@ -129,8 +129,8 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
 
       {/* Error Display */}
       {error && (
-        <div className="rounded-lg border border-red-300 bg-red-50 p-4">
-          <p className="text-sm text-red-800">{error}</p>
+        <div className="rounded-lg border border-red-700 bg-red-900 p-4">
+          <p className="text-sm text-red-200">{error}</p>
         </div>
       )}
 
@@ -142,12 +142,12 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
               {/* Recording Indicator */}
               <div className="flex items-center space-x-2">
                 <div className="h-3 w-3 animate-pulse rounded-full bg-red-600"></div>
-                <span className="text-sm font-medium text-gray-700">Recording</span>
+                <span className="text-sm font-medium text-gray-300">Recording</span>
               </div>
               
               {/* Duration Display - Requirement 2.2 */}
-              <div className="rounded-lg bg-gray-100 px-3 py-1">
-                <span className="font-mono text-lg font-semibold text-gray-900">
+              <div className="rounded-lg bg-gray-800 px-3 py-1">
+                <span className="font-mono text-lg font-semibold text-gray-100">
                   {formatDuration(recordingState.duration)}
                 </span>
               </div>
@@ -156,7 +156,7 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
 
           {/* Active Device Indicators - Requirement 2.2 */}
           {recordingState.isRecording && (
-            <div className="flex items-center space-x-4 text-sm text-gray-600">
+            <div className="flex items-center space-x-4 text-sm text-gray-400">
               <div className="flex items-center space-x-1">
                 <svg
                   className="h-4 w-4"
@@ -222,7 +222,7 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
             )}
           </button>
 
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-400">
             {recordingState.isRecording
               ? 'Click to stop recording'
               : `Click to start ${mediaType} recording`}
@@ -230,38 +230,6 @@ export function MediaRecorder({ onRecordingComplete, onError }: MediaRecorderPro
         </div>
       )}
 
-      {/* Recording Preview */}
-      {recordingState.blob && (
-        <div className="space-y-4">
-          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-gray-900">Recording Complete</p>
-                <p className="text-sm text-gray-600">
-                  Duration: {formatDuration(recordingState.duration)}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Size: {(recordingState.blob.size / 1024 / 1024).toFixed(2)} MB
-                </p>
-              </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={handleClearRecording}
-                  className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
-                >
-                  Discard
-                </button>
-                <button
-                  onClick={handleSaveRecording}
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-                >
-                  Use Recording
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

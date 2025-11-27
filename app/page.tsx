@@ -19,10 +19,10 @@ export default function Home() {
           <div className="mb-6 flex justify-center">
             <Logo size="lg" />
           </div>
-          <p className="mb-8 text-xl text-gray-600">
+          <p className="mb-8 text-xl text-gray-300">
             Guaranteed by math, not corporations
           </p>
-          <p className="mx-auto max-w-lg text-sm text-gray-500">
+          <p className="mx-auto max-w-lg text-sm text-gray-400">
             Create time-locked messages with client-side encryption,
             decentralized storage, and blockchain-enforced unlock conditions.
           </p>
@@ -30,47 +30,47 @@ export default function Home() {
 
         {/* Privacy Features */}
         <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
-          <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-4">
-            <span className="text-xl text-green-600">🔒</span>
+          <div className="flex items-start gap-3 rounded-lg border border-gray-700 bg-gray-800 p-4">
+            <span className="text-xl text-green-400">🔒</span>
             <div>
-              <h3 className="mb-1 font-semibold text-gray-900">
+              <h3 className="mb-1 font-semibold text-gray-100">
                 Client-Side Encryption
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 All encryption happens in your browser. No plaintext data ever
                 leaves your device.
               </p>
             </div>
           </div>
-          <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-4">
-            <span className="text-xl text-blue-600">⏰</span>
+          <div className="flex items-start gap-3 rounded-lg border border-gray-700 bg-gray-800 p-4">
+            <span className="text-xl text-blue-400">⏰</span>
             <div>
-              <h3 className="mb-1 font-semibold text-gray-900">Time-Locked</h3>
-              <p className="text-gray-600">
+              <h3 className="mb-1 font-semibold text-gray-100">Time-Locked</h3>
+              <p className="text-gray-300">
                 Blockchain enforces unlock conditions. Messages can only be
                 decrypted after the specified time.
               </p>
             </div>
           </div>
-          <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-4">
-            <span className="text-xl text-purple-600">🌐</span>
+          <div className="flex items-start gap-3 rounded-lg border border-gray-700 bg-gray-800 p-4">
+            <span className="text-xl text-purple-400">🌐</span>
             <div>
-              <h3 className="mb-1 font-semibold text-gray-900">
+              <h3 className="mb-1 font-semibold text-gray-100">
                 Decentralized Storage
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Lockdrop stores encrypted messages on IPFS. No central authority
                 controls your data.
               </p>
             </div>
           </div>
-          <div className="flex items-start gap-3 rounded-lg border border-gray-200 bg-white p-4">
-            <span className="text-xl text-orange-600">🔗</span>
+          <div className="flex items-start gap-3 rounded-lg border border-gray-700 bg-gray-800 p-4">
+            <span className="text-xl text-orange-400">🔗</span>
             <div>
-              <h3 className="mb-1 font-semibold text-gray-900">
+              <h3 className="mb-1 font-semibold text-gray-100">
                 Blockchain Verified
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-300">
                 Message metadata anchored on Polkadot testnet for transparency
                 and immutability.
               </p>
@@ -129,14 +129,14 @@ export default function Home() {
             )}
           </>
         ) : (
-          <div className="rounded-xl bg-white p-8 text-center shadow-lg dark:bg-gray-800">
-            <p className="mb-4 text-gray-600 dark:text-gray-400">
+          <div className="rounded-xl bg-gray-800 p-8 text-center shadow-lg border border-gray-700">
+            <p className="mb-4 text-gray-300">
               Connect your wallet to get started
             </p>
-            <p className="text-sm text-gray-500 mb-2">
+            <p className="text-sm text-gray-400 mb-2">
               Use the &quot;Connect Wallet&quot; button in the navigation above
             </p>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-500">
               ⚠️ Requires Talisman (recommended) or MetaMask with an Ethereum account (0x...)
             </p>
           </div>

@@ -288,24 +288,24 @@ export default function CreateMessagePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 px-4 py-8">
+    <div className="min-h-screen bg-gray-900 px-4 py-8">
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">
+          <h1 className="mb-2 text-3xl font-bold text-gray-100">
             Create Time-Locked Message
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-400">
             Record or upload a message that will be unlocked at a specific time
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Recipient Address */}
-          <div className="rounded-lg bg-white p-6 shadow-md">
+          <div className="rounded-lg bg-gray-800 p-6 shadow-md border border-gray-700">
             <label
               htmlFor="recipient"
-              className="mb-2 block text-sm font-medium text-gray-700"
+              className="mb-2 block text-sm font-medium text-gray-300"
             >
               Recipient Address *
             </label>
@@ -319,28 +319,28 @@ export default function CreateMessagePage() {
               }}
               onBlur={() => validateRecipientAddress(recipientAddress)}
               placeholder="Enter Ethereum address (e.g., 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb2)"
-              className={`w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-purple-500 ${
-                recipientError ? "border-red-500" : "border-gray-300"
+              className={`w-full rounded-lg border px-4 py-2 bg-gray-900 text-gray-100 focus:border-transparent focus:ring-2 focus:ring-purple-500 ${
+                recipientError ? "border-red-500" : "border-gray-600"
               }`}
             />
             {recipientError && (
-              <p className="mt-2 text-sm text-red-600">{recipientError}</p>
+              <p className="mt-2 text-sm text-red-400">{recipientError}</p>
             )}
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-400">
               The Ethereum address (0x...) of the person who will receive this message
             </p>
           </div>
 
           {/* Unlock Timestamp */}
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <label className="mb-2 block text-sm font-medium text-gray-700">
+          <div className="rounded-lg bg-gray-800 p-6 shadow-md border border-gray-700">
+            <label className="mb-2 block text-sm font-medium text-gray-300">
               Unlock Date & Time *
             </label>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
                 <label
                   htmlFor="unlock-date"
-                  className="mb-1 block text-xs text-gray-600"
+                  className="mb-1 block text-xs text-gray-400"
                 >
                   Date
                 </label>
@@ -353,15 +353,15 @@ export default function CreateMessagePage() {
                     if (timestampError && unlockTime) validateUnlockTimestamp();
                   }}
                   min={new Date().toISOString().split("T")[0]}
-                  className={`w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-purple-500 ${
-                    timestampError ? "border-red-500" : "border-gray-300"
+                  className={`w-full rounded-lg border px-4 py-2 bg-gray-900 text-gray-100 focus:border-transparent focus:ring-2 focus:ring-purple-500 ${
+                    timestampError ? "border-red-500" : "border-gray-600"
                   }`}
                 />
               </div>
               <div>
                 <label
                   htmlFor="unlock-time"
-                  className="mb-1 block text-xs text-gray-600"
+                  className="mb-1 block text-xs text-gray-400"
                 >
                   Time
                 </label>
@@ -373,32 +373,28 @@ export default function CreateMessagePage() {
                     setUnlockTime(e.target.value);
                     if (timestampError && unlockDate) validateUnlockTimestamp();
                   }}
-                  className={`w-full rounded-lg border px-4 py-2 focus:border-transparent focus:ring-2 focus:ring-purple-500 ${
-                    timestampError ? "border-red-500" : "border-gray-300"
+                  className={`w-full rounded-lg border px-4 py-2 bg-gray-900 text-gray-100 focus:border-transparent focus:ring-2 focus:ring-purple-500 ${
+                    timestampError ? "border-red-500" : "border-gray-600"
                   }`}
                 />
               </div>
             </div>
             {timestampError && (
-              <p className="mt-2 text-sm text-red-600">{timestampError}</p>
+              <p className="mt-2 text-sm text-red-400">{timestampError}</p>
             )}
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-gray-400">
               The message will be unlockable after this date and time
             </p>
           </div>
 
           {/* Media Selection */}
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">
-              Your Message *
-            </h2>
-
+          <div className="rounded-lg bg-gray-800 p-6 shadow-md border border-gray-700">
             {!mediaSource && !mediaFile && (
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <button
                   type="button"
                   onClick={() => setMediaSource("record")}
-                  className="rounded-lg border-2 border-dashed border-gray-300 p-6 transition-colors hover:border-purple-500 hover:bg-purple-50"
+                  className="rounded-lg border-2 border-dashed border-gray-600 p-6 transition-colors hover:border-purple-500 hover:bg-gray-700"
                 >
                   <div className="text-center">
                     <svg
@@ -414,17 +410,17 @@ export default function CreateMessagePage() {
                         d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
                       />
                     </svg>
-                    <p className="mt-2 text-sm font-medium text-gray-900">
+                    <p className="mt-2 text-sm font-medium text-gray-100">
                       Record Message
                     </p>
-                    <p className="mt-1 text-xs text-gray-500">Audio or video</p>
+                    <p className="mt-1 text-xs text-gray-400">Audio or video</p>
                   </div>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setMediaSource("upload")}
-                  className="rounded-lg border-2 border-dashed border-gray-300 p-6 transition-colors hover:border-purple-500 hover:bg-purple-50"
+                  className="rounded-lg border-2 border-dashed border-gray-600 p-6 transition-colors hover:border-purple-500 hover:bg-gray-700"
                 >
                   <div className="text-center">
                     <svg
@@ -440,10 +436,10 @@ export default function CreateMessagePage() {
                         d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                       />
                     </svg>
-                    <p className="mt-2 text-sm font-medium text-gray-900">
+                    <p className="mt-2 text-sm font-medium text-gray-100">
                       Upload File
                     </p>
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-gray-400">
                       MP3, WAV, MP4, etc.
                     </p>
                   </div>
@@ -470,7 +466,7 @@ export default function CreateMessagePage() {
                 <button
                   type="button"
                   onClick={() => setMediaSource(null)}
-                  className="mt-4 text-sm text-gray-600 hover:text-gray-900"
+                  className="mt-4 text-sm text-gray-400 hover:text-gray-200"
                 >
                   ← Back to selection
                 </button>
@@ -479,16 +475,11 @@ export default function CreateMessagePage() {
 
             {mediaFile && (
               <div>
-                <div className="mb-4">
-                  <h3 className="mb-2 text-sm font-medium text-gray-700">
-                    Message Preview
-                  </h3>
-                  <MediaPreview mediaFile={mediaFile} />
-                </div>
+                <MediaPreview mediaFile={mediaFile} />
                 <button
                   type="button"
                   onClick={handleClearMedia}
-                  className="text-sm text-red-600 hover:text-red-700"
+                  className="mt-4 text-sm text-red-400 hover:text-red-300"
                 >
                   Remove and choose different media
                 </button>
@@ -498,24 +489,24 @@ export default function CreateMessagePage() {
 
           {/* Progress Display */}
           {isSubmitting && progress && (
-            <div className="rounded-lg bg-white p-6 shadow-md">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">
+            <div className="rounded-lg bg-gray-800 p-6 shadow-md border border-gray-700">
+              <h3 className="mb-4 text-lg font-semibold text-gray-100">
                 Creating Message...
               </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-700">{progress.message}</span>
-                  <span className="font-medium text-purple-600">
+                  <span className="text-gray-300">{progress.message}</span>
+                  <span className="font-medium text-purple-400">
                     {Math.round(progress.progress)}%
                   </span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-gray-200">
+                <div className="h-2 w-full rounded-full bg-gray-700">
                   <div
                     className="h-2 rounded-full bg-purple-600 transition-all duration-300"
                     style={{ width: `${progress.progress}%` }}
                   />
                 </div>
-                <div className="flex items-center space-x-2 text-xs text-gray-600">
+                <div className="flex items-center space-x-2 text-xs text-gray-400">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-600 border-t-transparent" />
                   <span>Please wait and do not close this page...</span>
                 </div>
@@ -605,14 +596,14 @@ export default function CreateMessagePage() {
           <div className="flex justify-end space-x-4">
             <a
               href="/"
-              className="rounded-lg border border-gray-300 px-6 py-3 text-gray-700 transition-colors hover:bg-gray-50"
+              className="rounded-lg border border-gray-600 px-6 py-3 text-gray-300 transition-colors hover:bg-gray-700"
             >
               Cancel
             </a>
             <button
               type="submit"
               disabled={!mediaFile || isSubmitting}
-              className="rounded-lg bg-purple-600 px-6 py-3 text-white transition-colors hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+              className="rounded-lg bg-purple-600 px-6 py-3 text-white transition-colors hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-gray-600"
             >
               {isSubmitting ? "Creating..." : "Create Time-Locked Message"}
             </button>

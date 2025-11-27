@@ -74,15 +74,15 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-gray-800 shadow-xl border border-gray-700">
 
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-6 py-4">
-          <h2 className="text-2xl font-bold text-gray-900">Unlock Message</h2>
+        <div className="flex items-center justify-between border-b border-gray-700 px-6 py-4">
+          <h2 className="text-2xl font-bold text-gray-100">Unlock Message</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 transition-colors hover:text-gray-600"
+            className="text-gray-500 transition-colors hover:text-gray-300"
             disabled={isUnlocking}
           >
             <svg
@@ -104,28 +104,28 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
         {/* Content */}
         <div className="space-y-6 px-6 py-6">
           {/* Message Metadata */}
-          <div className="space-y-3 rounded-lg bg-gray-50 p-4">
+          <div className="space-y-3 rounded-lg bg-gray-900 p-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-500">From:</span>
-              <span className="font-mono text-sm text-gray-900">
+              <span className="text-sm font-medium text-gray-400">From:</span>
+              <span className="font-mono text-sm text-gray-200">
                 {formatAddress(message.sender)}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm font-medium text-gray-400">
                 Created:
               </span>
-              <span className="text-sm text-gray-900">
+              <span className="text-sm text-gray-200">
                 {formatTimestamp(message.createdAt)}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm font-medium text-gray-400">
                 Unlock Time:
               </span>
-              <span className="text-sm text-gray-900">
+              <span className="text-sm text-gray-200">
                 {formatTimestamp(message.unlockTimestamp)}
               </span>
             </div>
@@ -133,20 +133,20 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
             {message.metadata && (
               <>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-500">
+                  <span className="text-sm font-medium text-gray-400">
                     Type:
                   </span>
-                  <span className="text-sm text-gray-900">
+                  <span className="text-sm text-gray-200">
                     {message.metadata.mimeType}
                   </span>
                 </div>
 
                 {message.metadata.fileSize && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-500">
+                    <span className="text-sm font-medium text-gray-400">
                       Size:
                     </span>
-                    <span className="text-sm text-gray-900">
+                    <span className="text-sm text-gray-200">
                       {(message.metadata.fileSize / 1024 / 1024).toFixed(2)} MB
                     </span>
                   </div>
@@ -154,10 +154,10 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
 
                 {message.metadata.duration && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-500">
+                    <span className="text-sm font-medium text-gray-400">
                       Duration:
                     </span>
-                    <span className="text-sm text-gray-900">
+                    <span className="text-sm text-gray-200">
                       {Math.round(message.metadata.duration)}s
                     </span>
                   </div>
@@ -186,10 +186,10 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-green-600">
+                  <p className="text-2xl font-bold text-green-400">
                     Ready to Unlock
                   </p>
-                  <p className="mt-2 text-sm text-gray-500">
+                  <p className="mt-2 text-sm text-gray-400">
                     This message can now be decrypted and viewed
                   </p>
                 </div>
@@ -198,7 +198,7 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
               <div className="space-y-4">
                 <div className="flex justify-center">
                   <svg
-                    className="h-16 w-16 text-gray-400"
+                    className="h-16 w-16 text-gray-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -212,10 +212,10 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold text-gray-100">
                     Still Locked
                   </p>
-                  <p className="mt-2 text-lg text-gray-600">
+                  <p className="mt-2 text-lg text-gray-300">
                     Unlocks {timeRemaining}
                   </p>
                   <p className="mt-1 text-sm text-gray-500">
@@ -228,10 +228,10 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
 
           {/* Error Message */}
           {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+            <div className="rounded-lg border border-red-700 bg-red-900 p-4">
               <div className="flex items-start">
                 <svg
-                  className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-red-500"
+                  className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-red-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -244,10 +244,10 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
                   />
                 </svg>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-red-800">
+                  <p className="text-sm font-medium text-red-200">
                     Unlock Failed
                   </p>
-                  <p className="mt-1 text-sm text-red-700">{error}</p>
+                  <p className="mt-1 text-sm text-red-300">{error}</p>
                 </div>
               </div>
             </div>
@@ -255,14 +255,14 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
 
           {/* Unlock Progress */}
           {isUnlocking && (
-            <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+            <div className="rounded-lg border border-blue-700 bg-blue-900 p-4">
               <div className="flex items-center">
-                <div className="mr-3 h-5 w-5 animate-spin rounded-full border-b-2 border-blue-600"></div>
+                <div className="mr-3 h-5 w-5 animate-spin rounded-full border-b-2 border-blue-400"></div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-blue-800">
+                  <p className="text-sm font-medium text-blue-200">
                     Unlocking Message...
                   </p>
-                  <p className="mt-1 text-xs text-blue-700">
+                  <p className="mt-1 text-xs text-blue-300">
                     Downloading and decrypting content. This may take a moment.
                   </p>
                 </div>
@@ -272,10 +272,10 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 border-t px-6 py-4">
+        <div className="flex justify-end gap-3 border-t border-gray-700 px-6 py-4">
           <button
             onClick={onClose}
-            className="rounded-lg bg-gray-100 px-4 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-200"
+            className="rounded-lg bg-gray-700 px-4 py-2 font-medium text-gray-300 transition-colors hover:bg-gray-600"
             disabled={isUnlocking}
           >
             Cancel
@@ -286,7 +286,7 @@ export function UnlockFlow({ message, onUnlock, onClose }: UnlockFlowProps) {
             className={`rounded-lg px-6 py-2 font-medium transition-colors ${
               isUnlockable && !isUnlocking
                 ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "cursor-not-allowed bg-gray-300 text-gray-500"
+                : "cursor-not-allowed bg-gray-600 text-gray-500"
             }`}
           >
             {isUnlocking ? "Unlocking..." : "Unlock & View"}

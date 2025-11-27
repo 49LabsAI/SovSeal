@@ -90,14 +90,15 @@ export class StorachaService {
       // If we have a saved space DID, try to restore it as current space
       if (this.authState.spaceDid) {
         try {
+          console.log("Storacha: Attempting to restore space:", this.authState.spaceDid);
           await this.client.setCurrentSpace(
             this.authState.spaceDid as `did:${string}:${string}`
           );
+          console.log("Storacha: Space restored successfully");
         } catch (error) {
           console.warn("Failed to restore space from saved state:", error);
-          // Clear invalid space DID
-          this.authState.spaceDid = undefined;
-          this.saveAuthState();
+          // Don't clear the space DID immediately - user might need to re-authenticate
+          console.log("Storacha: Space restoration failed, may need re-authentication");
         }
       }
 
@@ -117,6 +118,14 @@ export class StorachaService {
       const emailAddress = email as `${string}@${string}`;
 
       console.log("Storacha: Sending login email to", emailAddress);
+      
+      // Save email immediately so we don't lose it
+      this.authState = {
+        isAuthenticated: false,
+        email,
+      };
+      this.saveAuthState();
+
       await withTimeout(
         client.login(emailAddress),
         TIMEOUTS.IPFS_UPLOAD_SMALL,
@@ -135,6 +144,7 @@ export class StorachaService {
         await (client as any).waitForPaymentPlan();
       }
 
+      // Update authentication status
       this.authState = {
         isAuthenticated: true,
         email,
@@ -143,6 +153,11 @@ export class StorachaService {
       console.log("Storacha: Authentication state saved");
     } catch (error) {
       console.error("Storacha login error:", error);
+      
+      // Clear partial state on error
+      this.authState = { isAuthenticated: false };
+      this.saveAuthState();
+      
       throw new Error(
         `Authentication failed: ${error instanceof Error ? error.message : "Unknown error"}`
       );
@@ -208,6 +223,41 @@ export class StorachaService {
 
   isReady(): boolean {
     return this.authState.isAuthenticated && !!this.authState.spaceDid;
+  }
+
+  /**
+   * Check if client can be restored from saved state
+   * Useful for detecting partial authentication states
+   */
+  async checkConnection(): Promise<{
+    canRestore: boolean;
+    needsSpace: boolean;
+    needsAuth: boolean;
+  }> {
+    try {
+      const client = await this.getClient();
+      
+      // Check if we have accounts (authenticated)
+      const accounts = client.accounts();
+      const hasAccounts = Object.keys(accounts).length > 0;
+      
+      // Check if we have a current space
+      const currentSpace = client.currentSpace();
+      const hasSpace = !!currentSpace;
+
+      return {
+        canRestore: hasAccounts && hasSpace,
+        needsSpace: hasAccounts && !hasSpace,
+        needsAuth: !hasAccounts,
+      };
+    } catch (error) {
+      console.error("Storacha: Connection check failed:", error);
+      return {
+        canRestore: false,
+        needsSpace: false,
+        needsAuth: true,
+      };
+    }
   }
 
   private sleep(ms: number): Promise<void> {
