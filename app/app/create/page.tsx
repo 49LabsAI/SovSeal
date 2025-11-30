@@ -72,6 +72,59 @@ const loadMessageCreationService = () => import("@/lib/message").then((mod) => m
 
 type MediaSource = "record" | "upload" | null;
 
+/**
+ * Shareable link section shown after successful message creation
+ */
+function ShareableLinkSection({ messageId }: { messageId: string }) {
+  const [copied, setCopied] = useState(false);
+  const unlockUrl = typeof window !== "undefined" 
+    ? `${window.location.origin}/unlock/${messageId}`
+    : `/unlock/${messageId}`;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(unlockUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+  return (
+    <div className="mt-4 space-y-3">
+      <div>
+        <label className="mb-1.5 block text-xs font-medium text-dark-400">
+          Share this link with the recipient
+        </label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={unlockUrl}
+            readOnly
+            className="input-field flex-1 bg-dark-800/50 font-mono text-xs"
+          />
+          <button
+            type="button"
+            onClick={handleCopy}
+            className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+              copied
+                ? "bg-green-500/20 text-green-400"
+                : "bg-brand-500/20 text-brand-400 hover:bg-brand-500/30"
+            }`}
+          >
+            {copied ? "Copied!" : "Copy"}
+          </button>
+        </div>
+      </div>
+      <p className="text-xs text-dark-500">
+        The recipient will need to connect their wallet (address: {" "}
+        <span className="font-mono">{messageId.slice(0, 10)}...</span>) to unlock the message.
+      </p>
+    </div>
+  );
+}
+
 export default function CreateMessagePage() {
   const { address, isConnected, selectedAccount } = useWallet();
   const { isReady: isStorachaReady } = useStoracha();
@@ -471,7 +524,7 @@ export default function CreateMessagePage() {
               ) : (
                 <XCircleIcon className="h-6 w-6 flex-shrink-0 text-red-400" />
               )}
-              <div>
+              <div className="flex-1">
                 <h3
                   className={`font-display font-semibold ${result.success ? "text-green-400" : "text-red-400"}`}
                 >
@@ -486,9 +539,7 @@ export default function CreateMessagePage() {
                       the blockchain.
                     </p>
                     {result.messageId && (
-                      <p className="mt-2 break-all font-mono text-xs text-dark-400">
-                        ID: {result.messageId}
-                      </p>
+                      <ShareableLinkSection messageId={result.messageId} />
                     )}
                   </div>
                 ) : (
