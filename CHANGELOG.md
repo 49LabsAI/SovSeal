@@ -1,6 +1,33 @@
 # Changelog
 
-All notable changes to Lockdrop will be documented in this file.
+All notable changes to SovSeal will be documented in this file.
+
+## [2.0.0] - 2025-12-29
+
+### Brand Transformation
+
+- 🎨 **Rebranded from Lockdrop to SovSeal** (Sovereign Seal)
+- 🎯 **New positioning**: From consumer novelty to institutional-grade protocol
+- 🎨 **New visual identity**: Deep Navy (#102a43), Gold (#d4af37), Slate Grey (#64748b)
+- ✏️ **New typography**: Playfair Display (serif headings), Inter (body)
+- 📝 **New tagline**: "The Sovereign Protocol for Digital Legacy"
+- 🎯 **New value proposition**: Selling Admissibility, Security, and Finality
+
+### Documentation
+
+- ✅ Created comprehensive `docs/SOVSEAL_ROADMAP.md` with technical objectives
+- ✅ Updated `docs/YC_ROADMAP.md` with SovSeal branding
+- ✅ Updated `docs/IMPLEMENTATION_GUIDE.md` with SovSeal branding
+- ✅ Updated `README.md` with new brand identity and product concepts
+- ✅ Updated `.kiro/steering/product.md` with target personas
+
+### Product Concepts
+
+- 🏛️ **The Vault**: Digital Wills with social recovery and multi-heir designation
+- 🛡️ **The Shield**: Whistleblower deterrence with dead man's switch
+- 📜 **The Escrow**: B2B asset handover with integrity proofs
+
+---
 
 ## [1.0.2] - 2025-11-30
 
@@ -46,7 +73,7 @@ All notable changes to Lockdrop will be documented in this file.
 
 ### Added
 
-- ✅ Complete end-to-end encrypted time-capsule messaging with Lockdrop
+- ✅ Complete end-to-end encrypted time-capsule messaging
 - ✅ Talisman wallet integration (recommended) with MetaMask support
 - ✅ Storacha Network (IPFS) for decentralized storage
 - ✅ Passet Hub testnet (Polkadot) smart contract integration

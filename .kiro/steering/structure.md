@@ -3,13 +3,14 @@
 ## Directory Organization
 
 ```
-lockdrop-app/
+sovseal/
 ├── app/              # Next.js App Router pages and layouts
 ├── components/       # React components (organized by feature)
 ├── lib/              # Core services and business logic
 ├── hooks/            # Custom React hooks
 ├── types/            # TypeScript type definitions
 ├── utils/            # Utility functions
+├── contract/         # Solidity smart contracts
 └── public/           # Static assets
 ```
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Lockdrop supports multiple IPFS storage providers with a unified interface. The storage layer handles encrypted blob uploads and downloads with automatic retry logic, progress tracking, and CID verification.
+SovSeal supports multiple IPFS storage providers with a unified interface. The storage layer handles encrypted blob uploads and downloads with automatic retry logic, progress tracking, and CID verification.
 
 ## Available Services
 

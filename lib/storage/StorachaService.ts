@@ -169,7 +169,7 @@ export class StorachaService {
     }
 
     try {
-      const spaceName = name || "lockdrop-space";
+      const spaceName = name || "sovseal-space";
       ErrorLogger.info(LOG_CONTEXT, "Creating space", { spaceName });
 
       // Get the accounts to use for space creation

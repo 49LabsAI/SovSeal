@@ -10,17 +10,17 @@
 
 export const STORAGE_KEYS = {
   // Wallet
-  WALLET_CONNECTION: "lockdrop_wallet_connection",
+  WALLET_CONNECTION: "sovseal_wallet_connection",
 
   // Storage
-  STORACHA_AUTH: "lockdrop_storacha_auth",
+  STORACHA_AUTH: "sovseal_storacha_auth",
 
   // UI State
-  KEY_BACKUP_DISMISSED: "lockdrop_key_backup_dismissed",
+  KEY_BACKUP_DISMISSED: "sovseal_key_backup_dismissed",
 
   // Messages
-  CLAIMED_MESSAGES: "lockdrop_claimed_messages",
-  MESSAGE_VIEWED_PREFIX: "lockdrop_message_viewed_",
+  CLAIMED_MESSAGES: "sovseal_claimed_messages",
+  MESSAGE_VIEWED_PREFIX: "sovseal_message_viewed_",
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

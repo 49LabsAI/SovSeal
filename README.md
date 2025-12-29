@@ -1,27 +1,31 @@
 <div align="center">
-  <img src="public/logo.png" alt="Lockdrop Logo" width="120" height="120" />
+  <img src="public/logo.png" alt="SovSeal Logo" width="120" height="120" />
   
-  # Lockdrop
+  # SovSeal
   
-  **Guaranteed by math, not corporations**
+  **The Sovereign Protocol for Digital Legacy**
+  
+  *Guaranteed by math, not corporations*
 </div>
 
-Lockdrop is a decentralized time-capsule application that enables users to create time-locked audio/video messages using client-side encryption, IPFS storage, and Polkadot blockchain.
+SovSeal (Sovereign Seal) is an institutional-grade protocol for digital legacy and time-locked media. Create encrypted vaults using client-side encryption, IPFS storage, and Polkadot blockchain — selling Admissibility, Security, and Finality.
 
 ## 🎯 Overview
 
-Lockdrop is a privacy-first application that allows you to send messages to the future. Record or upload audio/video content, encrypt it locally in your browser, store it on decentralized IPFS, and set a future unlock time enforced by the Polkadot blockchain. No corporation, server, or third party can access your content before the unlock time—it's guaranteed by cryptography and blockchain consensus.
+SovSeal is a privacy-first protocol that enables secure, legally-admissible digital legacy management. Record or upload audio/video content, encrypt it locally in your browser, store it on decentralized IPFS, and set a future unlock time enforced by the Polkadot blockchain. No corporation, server, or third party can access your content before the unlock time—it's guaranteed by cryptography and blockchain consensus.
 
 ## ✨ Features
 
 - 🔐 **Client-side encryption** with AES-256-GCM (all encryption happens in your browser)
 - 🌐 **Decentralized storage** via IPFS using Storacha Network
 - ⛓️ **Blockchain-enforced unlock conditions** on Passet Hub (Polkadot testnet)
-- 🎥 **Record or upload** audio/video messages directly in the browser
-- ⏰ **Time-locked message delivery** with timestamp verification
+- 🎥 **Record or upload** audio/video content directly in the browser
+- ⏰ **Time-locked delivery** with timestamp verification
 - 🦊 **Talisman wallet integration** for blockchain interactions
 - 📦 **Recipient-without-wallet flow** using redeem packages with passphrase protection
-- 📊 **Dashboard** to track sent and received messages with real-time status updates
+- 📊 **Dashboard** to track sent and received vaults with real-time status updates
+- 📜 **Certificate of Authenticity** (roadmap) for legally-admissible proof
+- 🛡️ **Social Recovery** (roadmap) with Shamir's Secret Sharing
 
 ## 🏗️ Architecture
 
@@ -61,6 +65,17 @@ Lockdrop is a privacy-first application that allows you to send messages to the 
 5. **Wait**: Blockchain enforces the time-lock until unlock timestamp
 6. **Unlock**: Recipient decrypts and plays content after timestamp passes
 
+## 🎯 Product Concepts
+
+### The Vault (Digital Wills)
+For estate planners and HNWIs — secure, legally-admissible digital will supplements with multi-heir designation and social recovery.
+
+### The Shield (Whistleblower Deterrence)
+For journalists and activists — dead man's switch with automated release if check-ins are missed.
+
+### The Escrow (B2B Asset Handover)
+For legal professionals — cryptographic proof of content integrity with time-locked document releases.
+
 ## 🛠️ Tech Stack
 
 - **Framework**: Next.js 14+ with App Router
@@ -88,7 +103,7 @@ Before you begin, ensure you have the following installed and configured:
 
 ### Connection Improvements ✨ NEW
 
-Lockdrop now features **persistent connections** that survive page refreshes and browser restarts:
+SovSeal now features **persistent connections** that survive page refreshes and browser restarts:
 
 - **Wallet connections persist** - Connect once, stay connected
 - **Storacha authentication persists** - No need to re-verify email
@@ -99,7 +114,7 @@ See the [User Connection Guide](docs/USER_CONNECTION_GUIDE.md) for details.
 
 ### Storacha Setup
 
-Lockdrop uses Storacha Network for decentralized storage. To enable uploads:
+SovSeal uses Storacha Network for decentralized storage. To enable uploads:
 
 1. Start the development server (see below)
 2. Navigate to **Settings** in the app
@@ -113,8 +128,8 @@ Lockdrop uses Storacha Network for decentralized storage. To enable uploads:
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/yourusername/lockdrop-app.git
-cd lockdrop-app
+git clone https://github.com/yourusername/sovseal.git
+cd sovseal
 ```
 
 2. **Install dependencies:**
@@ -211,19 +226,20 @@ npm run format
 ## Project Structure
 
 ```
-lockdrop-app/
+sovseal/
 ├── app/              # Next.js App Router pages
 ├── components/       # React components
 ├── lib/              # Core services (encryption, IPFS, contracts)
 ├── hooks/            # Custom React hooks
 ├── types/            # TypeScript type definitions
 ├── utils/            # Utility functions
-└── public/           # Static assets
+├── contract/         # Solidity smart contracts
+└── docs/             # Documentation
 ```
 
 ## 🔒 Privacy Guarantees
 
-Lockdrop is designed with privacy as the foundation. Here's what makes it secure:
+SovSeal is designed with privacy as the foundation. Here's what makes it secure:
 
 ### Client-Side Encryption
 
@@ -336,7 +352,7 @@ To ensure long-term access to your messages, export and back up the encrypted CI
 
 ## 📦 Smart Contract
 
-The Lockdrop smart contract is written in Solidity 0.8.20 and deployed to Passet Hub testnet via pallet-revive (PolkaVM).
+The SovSeal smart contract is written in Solidity 0.8.20 and deployed to Passet Hub testnet via pallet-revive (PolkaVM).
 
 ### Contract Details
 
@@ -440,16 +456,19 @@ const redeemPackage = {
 
 ### For Users
 
-- **[User Guide](docs/user-guide.md)**: Step-by-step tutorials for using Lockdrop
+- **[User Guide](docs/user-guide.md)**: Step-by-step tutorials for using SovSeal
 - **[FAQ](docs/user-guide.md#faq)**: Common questions and answers
 
 ### For Developers
 
+- **[SovSeal Roadmap](docs/SOVSEAL_ROADMAP.md)**: Master roadmap for YC-ready transformation
+- **[YC Roadmap](docs/YC_ROADMAP.md)**: Technical implementation roadmap
+- **[Implementation Guide](docs/IMPLEMENTATION_GUIDE.md)**: Step-by-step implementation details
 - **[RPC Endpoints Reference](docs/RPC_ENDPOINTS.md)**: Complete guide to Passet Hub RPC endpoints
 - **[Contract Deployment Guide](contract/DEPLOYMENT_GUIDE.md)**: Deploy Solidity contracts to Passet Hub
 - **[Developer Guide](docs/developer-guide.md)**: API reference, architecture, and technical details
-- **[Requirements](.kiro/specs/lockdrop-app/requirements.md)**: Detailed requirements specification
-- **[Design](.kiro/specs/lockdrop-app/design.md)**: Architecture and design decisions
+- **[Requirements](.kiro/specs/sovseal/requirements.md)**: Detailed requirements specification
+- **[Design](.kiro/specs/sovseal/design.md)**: Architecture and design decisions
 
 ### Additional Resources
 
@@ -482,10 +501,10 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/lockdrop-app/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/lockdrop-app/discussions)
-- **Email**: support@lockdrop.example.com
+- **Issues**: [GitHub Issues](https://github.com/yourusername/sovseal/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/sovseal/discussions)
+- **Email**: support@sovseal.com
 
 ---
 
-**Remember: Your privacy is guaranteed by math, not corporations. Always back up your wallet seed phrase!**
+**Remember: Your privacy is guaranteed by math, not corporations. SovSeal — The Sovereign Protocol for Digital Legacy.**

@@ -1,6 +1,6 @@
-# Contributing to Lockdrop
+# Contributing to SovSeal
 
-Thank you for your interest in contributing to Lockdrop! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to SovSeal! This document provides guidelines and instructions for contributing.
 
 ## Code of Conduct
 
@@ -10,7 +10,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 
 ### Reporting Bugs
 
-1. Check if the bug has already been reported in [Issues](https://github.com/USERNAME/lockdrop-app/issues)
+1. Check if the bug has already been reported in [Issues](https://github.com/USERNAME/sovseal/issues)
 2. If not, create a new issue using the Bug Report template
 3. Provide detailed information including:
    - Steps to reproduce
@@ -20,7 +20,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 
 ### Suggesting Features
 
-1. Check if the feature has already been requested in [Issues](https://github.com/USERNAME/lockdrop-app/issues)
+1. Check if the feature has already been requested in [Issues](https://github.com/USERNAME/sovseal/issues)
 2. If not, create a new issue using the Feature Request template
 3. Clearly describe:
    - The problem the feature solves
@@ -41,8 +41,8 @@ By participating in this project, you agree to maintain a respectful and inclusi
 ```bash
 # Fork the repository on GitHub
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/lockdrop-app.git
-cd lockdrop-app
+git clone https://github.com/YOUR_USERNAME/sovseal.git
+cd sovseal
 
 # Install dependencies
 npm install
@@ -166,7 +166,7 @@ lockdrop-app/
 
 ## Privacy and Security
 
-Lockdrop prioritizes privacy and security. When contributing:
+SovSeal prioritizes privacy and security. When contributing:
 
 - **Never** transmit plaintext media or encryption keys
 - **Always** perform encryption/decryption client-side
@@ -184,8 +184,8 @@ Lockdrop prioritizes privacy and security. When contributing:
 
 ## Getting Help
 
-- **Questions**: Open a [Discussion](https://github.com/USERNAME/lockdrop-app/discussions)
-- **Issues**: Check existing [Issues](https://github.com/USERNAME/lockdrop-app/issues)
+- **Questions**: Open a [Discussion](https://github.com/USERNAME/sovseal/discussions)
+- **Issues**: Check existing [Issues](https://github.com/USERNAME/sovseal/issues)
 - **Documentation**: Read the [docs/](./docs/) folder
 
 ## Recognition
@@ -202,4 +202,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ## Thank You!
 
-Your contributions help make Lockdrop better for everyone. We appreciate your time and effort! 🎉
+Your contributions help make SovSeal better for everyone. We appreciate your time and effort! 🎉

@@ -1,15 +1,33 @@
 # Technology Stack
 
-## Core Technologies
+## SovSeal Core Technologies
 
 - **Framework**: Next.js 14+ with App Router
 - **Language**: TypeScript with strict mode enabled
 - **Styling**: Tailwind CSS with Prettier plugin for class sorting
-- **Blockchain**: Polkadot.js API for Passet Hub testnet (Polkadot ecosystem)
+- **Blockchain**: ethers.js v6 for Ethereum-compatible RPC on Passet Hub (Polkadot ecosystem)
 - **Smart Contracts**: Solidity 0.8.20 compiled to PolkaVM via pallet-revive
 - **Storage**: Storacha Network (formerly Web3.Storage) for decentralized IPFS storage
-- **Wallet**: Talisman browser extension via @polkadot/extension-dapp
-- **Cryptography**: Web Crypto API (AES-256-GCM, RSA-OAEP)
+- **Wallet**: Talisman or MetaMask browser extension (Ethereum-compatible)
+- **Cryptography**: Web Crypto API (AES-256-GCM, ECDH P-256)
+
+## Visual Identity
+
+- **Primary Color**: Deep Navy (#102a43)
+- **Accent Color**: Gold/Brass (#d4af37)
+- **Secondary**: Slate Grey (#64748b)
+- **Typography (Headings)**: Playfair Display (serif)
+- **Typography (Body)**: Inter (sans-serif)
+
+## Roadmap Technologies (v2 - YC-Ready)
+
+- **Auth**: Privy SDK or Web3Auth for embedded wallets + passkeys
+- **Account Abstraction**: ERC-4337 for smart accounts
+- **Gasless**: Biconomy or Pimlico Paymaster
+- **Recovery**: @privy-io/shamir-secret-sharing for social recovery
+- **Permanent Storage**: Arweave for endowment-based pinning
+- **Legal**: Certificate of Authenticity with blockchain anchoring
+- **On-device AI**: Transformers.js for privacy-preserving ML
 
 ## Key Dependencies
 

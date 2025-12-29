@@ -1,6 +1,6 @@
 # Message Creation Module
 
-This module orchestrates the end-to-end creation of time-locked messages in the Lockdrop application.
+This module orchestrates the end-to-end creation of time-locked vaults in the SovSeal application.
 
 ## Overview
 
