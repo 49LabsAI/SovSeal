@@ -1,24 +1,25 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
-// Using Space Grotesk as display font (similar geometric feel to Satoshi, available on Google Fonts)
-const spaceGrotesk = Space_Grotesk({
+// Playfair Display for headings - institutional, authoritative serif
+const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-satoshi",
+  variable: "--font-playfair",
   weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Lockdrop - Guaranteed by math, not corporations",
+  title: "SovSeal - The Sovereign Protocol for Digital Legacy",
   description:
-    "Decentralized time-capsule for time-locked audio/video messages with blockchain-enforced privacy",
+    "Institutional-grade Zero-Knowledge Media Vault. Guaranteed by math, not corporations. Time-locked content with blockchain-enforced privacy.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   appleWebApp: {
-    title: "Lockdrop",
+    title: "SovSeal",
   },
 };
 
@@ -40,10 +41,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} min-h-screen bg-dark-950 font-sans text-dark-100 antialiased`}
+        className={`${inter.variable} ${playfairDisplay.variable} min-h-screen bg-navy-950 font-sans text-slate-100 antialiased`}
       >
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
