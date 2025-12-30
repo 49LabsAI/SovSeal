@@ -32,17 +32,17 @@ export function Navigation() {
           <Link
             href="/"
             className="group flex items-center gap-2"
-            aria-label="Lockdrop home"
+            aria-label="SovSeal home"
           >
             <Image
               src="/logo.png"
-              alt="Lockdrop"
+              alt="SovSeal"
               width={32}
               height={32}
               className="transition-transform group-hover:scale-105"
             />
             <span className="gradient-text hidden font-display text-lg font-bold sm:inline">
-              Lockdrop
+              SovSeal
             </span>
           </Link>
 

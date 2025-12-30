@@ -15,11 +15,11 @@ export function Footer() {
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-dark-500 sm:flex-row">
           <div className="flex items-center gap-4">
             <Link href="/" className="transition-colors hover:text-dark-300">
-              © {currentYear} Lockdrop
+              © {currentYear} SovSeal
             </Link>
             <span className="hidden sm:inline">•</span>
             <a
-              href="https://github.com/radebe49/Lockdrop"
+              href="https://github.com/radebe49/sovseal"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-dark-300"
@@ -28,7 +28,7 @@ export function Footer() {
             </a>
             <span className="hidden sm:inline">•</span>
             <a
-              href="https://github.com/radebe49/Lockdrop/blob/main/docs/SECURITY_AUDIT.md"
+              href="https://github.com/radebe49/sovseal/blob/main/docs/SECURITY_AUDIT.md"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-dark-300"

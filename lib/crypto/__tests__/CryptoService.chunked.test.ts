@@ -88,7 +88,7 @@ describe("CryptoService - Chunked Encryption (C3 Fix)", () => {
 
   describe("Chunked Encryption/Decryption", () => {
     it("should encrypt and decrypt small data with chunked method", async () => {
-      const testData = "Hello, Lockdrop! Testing chunked encryption.";
+      const testData = "Hello, SovSeal! Testing chunked encryption.";
       const blob = new Blob([testData]);
       const key = await CryptoService.generateAESKey();
       

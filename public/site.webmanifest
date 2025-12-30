@@ -1,7 +1,7 @@
 {
-  "name": "Lockdrop",
-  "short_name": "Lockdrop",
-  "description": "Decentralized time-capsule for time-locked audio/video messages",
+  "name": "SovSeal",
+  "short_name": "SovSeal",
+  "description": "The Sovereign Protocol for Digital Legacy - Institutional-grade Zero-Knowledge Media Vault",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",

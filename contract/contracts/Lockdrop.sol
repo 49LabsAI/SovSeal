@@ -2,9 +2,10 @@
 pragma solidity ^0.8.20;
 
 /**
- * @title Lockdrop
+ * @title SovSeal
  * @notice Smart contract for storing time-locked encrypted message metadata
  * @dev Stores IPFS CIDs and metadata for encrypted messages on Polkadot
+ * @custom:brand SovSeal - The Sovereign Protocol for Digital Legacy
  */
 contract Lockdrop {
     /// @notice Message metadata stored on-chain

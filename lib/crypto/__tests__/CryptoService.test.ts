@@ -36,7 +36,7 @@ describe("CryptoService", () => {
 
   describe("Blob Encryption", () => {
     it("should encrypt a blob successfully", async () => {
-      const testData = "Hello, Lockdrop!";
+      const testData = "Hello, SovSeal!";
       const blob = new Blob([testData], { type: "text/plain" });
       const key = await CryptoService.generateAESKey();
 
@@ -84,7 +84,7 @@ describe("CryptoService", () => {
 
   describe("Blob Decryption", () => {
     it("should decrypt encrypted blob correctly", async () => {
-      const testData = "Hello, Lockdrop!";
+      const testData = "Hello, SovSeal!";
       const blob = new Blob([testData], { type: "text/plain" });
       const key = await CryptoService.generateAESKey();
 

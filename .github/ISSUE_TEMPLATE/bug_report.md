@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug or issue with Lockdrop
+about: Report a bug or issue with SovSeal
 title: "[BUG] "
 labels: bug
 assignees: ""

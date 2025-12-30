@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new feature for Lockdrop
+about: Suggest a new feature for SovSeal
 title: "[FEATURE] "
 labels: enhancement
 assignees: ""

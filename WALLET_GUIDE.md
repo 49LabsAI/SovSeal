@@ -86,7 +86,7 @@ window.ethereum.request({ method: "eth_requestAccounts" })
 
 **Clear browser state:**
 ```javascript
-localStorage.removeItem("lockdrop_wallet_connection");
+localStorage.removeItem("sovseal_wallet_connection");
 ```
 
 **Reset wallet permissions:**

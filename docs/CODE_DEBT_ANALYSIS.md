@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-This document identifies temporary solutions, inefficient patterns, and technical debt across the Lockdrop codebase. Each item is categorized by severity and includes recommendations for improvement.
+This document identifies temporary solutions, inefficient patterns, and technical debt across the SovSeal codebase. Each item is categorized by severity and includes recommendations for improvement.
 
 **Severity Levels:**
 

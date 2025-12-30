@@ -175,7 +175,7 @@ const { cid } = await IPFSService.uploadFile(packageBlob);
 // Generate claim link
 const claimLink = RedeemPackageService.generateClaimLink(
   cid,
-  "https://lockdrop.app"
+  "https://sovseal.app"
 );
 
 console.log("Share this link:", claimLink.url);
