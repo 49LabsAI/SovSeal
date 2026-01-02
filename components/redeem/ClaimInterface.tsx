@@ -9,7 +9,7 @@ import Link from "next/link";
 import { RedeemPackageService } from "@/lib/redeem";
 import { IPFSService } from "@/lib/storage";
 import type { DecryptedRedeemPackage } from "@/types/redeem";
-import { useWallet } from "@/lib/wallet/WalletProvider";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ClaimInterfaceProps {
   packageCID: string;
@@ -17,7 +17,7 @@ interface ClaimInterfaceProps {
 }
 
 export function ClaimInterface({ packageCID, onClaimed }: ClaimInterfaceProps) {
-  const { isConnected } = useWallet();
+  const { isConnected } = useAuth();
   const [passphrase, setPassphrase] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -121,7 +121,7 @@ export function ClaimInterface({ packageCID, onClaimed }: ClaimInterfaceProps) {
               unlock
             </li>
             <li>
-              Connect your Talisman wallet to decrypt and view the message
+              Sign in to decrypt and view the message
             </li>
           </ol>
         </div>
@@ -157,29 +157,16 @@ export function ClaimInterface({ packageCID, onClaimed }: ClaimInterfaceProps) {
         </p>
       </div>
 
-      {/* Wallet Connection Status */}
+      {/* Auth Status */}
       {!isConnected && (
         <div className="mb-6 rounded border border-yellow-200 bg-yellow-50 p-4">
           <p className="mb-2 text-sm font-medium text-yellow-900">
-            Wallet Not Connected
+            Sign In Required
           </p>
           <p className="mb-3 text-sm text-yellow-800">
-            You need to connect your Talisman wallet to claim this message. If
-            you don&apos;t have a wallet yet:
+            You need to sign in to claim this message. Click the sign in button
+            to continue with your email, passkey, or wallet.
           </p>
-          <ol className="mb-3 list-inside list-decimal space-y-1 text-sm text-yellow-800">
-            <li>Install the Talisman browser extension</li>
-            <li>Create a new wallet or import an existing one</li>
-            <li>Return to this page and connect your wallet</li>
-          </ol>
-          <a
-            href="https://talisman.xyz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-blue-600 underline hover:text-blue-800"
-          >
-            Get Talisman Wallet →
-          </a>
         </div>
       )}
 
@@ -248,7 +235,7 @@ export function ClaimInterface({ packageCID, onClaimed }: ClaimInterfaceProps) {
         <ul className="list-inside list-disc space-y-1 text-xs text-gray-600">
           <li>Make sure you have the correct passphrase from the sender</li>
           <li>The passphrase is case-sensitive</li>
-          <li>You must have a Talisman wallet connected</li>
+          <li>You must be signed in to claim</li>
           <li>Check if the claim link has expired</li>
         </ul>
       </div>

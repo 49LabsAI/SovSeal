@@ -2,6 +2,9 @@
   "name": "sovseal",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,10 +19,13 @@
     "deploy:preview": "vercel"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
     "@heroicons/react": "^2.2.0",
     "@polkadot/extension-dapp": "^0.62.3",
     "@polkadot/util": "^13.5.7",
     "@polkadot/util-crypto": "^13.5.7",
+    "@privy-io/react-auth": "^3.10.0",
     "@storacha/client": "^1.0.0",
     "@supabase/supabase-js": "^2.89.0",
     "@vercel/analytics": "^1.5.0",
@@ -28,7 +34,8 @@
     "lucide-react": "^0.555.0",
     "next": "^14.2.0",
     "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "react-dom": "^18.3.0",
+    "shamir-secret-sharing": "^0.0.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",

@@ -1,0 +1,40 @@
+{
+    "name": "@sovseal/contracts",
+    "version": "1.0.0",
+    "description": "SovSeal Protocol - Smart contracts for decentralized digital legacy and time-locked media",
+    "license": "Apache-2.0",
+    "author": "SovSeal Protocol Contributors",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sovseal/contracts"
+    },
+    "homepage": "https://sovseal.io",
+    "keywords": [
+        "sovseal",
+        "digital-legacy",
+        "time-lock",
+        "smart-contracts",
+        "solidity",
+        "ethereum",
+        "polkadot",
+        "web3"
+    ],
+    "files": [
+        "src/**/*.sol",
+        "abi/**/*.json",
+        "README.md",
+        "LICENSE"
+    ],
+    "main": "src/index.js",
+    "types": "src/index.d.ts",
+    "scripts": {
+        "compile": "hardhat compile",
+        "test": "hardhat test",
+        "lint": "solhint 'src/**/*.sol'"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+        "hardhat": "^2.19.0",
+        "solhint": "^4.0.0"
+    }
+}

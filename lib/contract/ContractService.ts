@@ -4,6 +4,11 @@
  * Handles connection to Passet Hub testnet via Ethereum RPC and provides methods for
  * interacting with the SovSeal time-lock Solidity contract.
  *
+ * Features:
+ * - Multi-RPC fallback for improved reliability
+ * - Automatic endpoint rotation on failure
+ * - Connection health monitoring
+ *
  * Uses ethers.js for Ethereum-compatible contract interactions on Polkadot infrastructure.
  */
 
@@ -13,6 +18,7 @@ import { ethers } from "ethers";
 import { withTimeout, TIMEOUTS } from "@/utils/timeout";
 import { withRetry } from "@/utils/retry";
 import { ErrorLogger } from "@/lib/monitoring/ErrorLogger";
+import { getRpcEndpoints, getCurrentNetwork } from "@/lib/config/networks";
 import solidityAbi from "@/contract/solidity-abi.json";
 import {
   isValidEthereumAddress,
@@ -26,7 +32,7 @@ const LOG_CONTEXT = "ContractService";
  */
 export interface ContractConfig {
   contractAddress: string;
-  rpcEndpoint: string;
+  rpcEndpoints: string[];
   network: string;
 }
 
@@ -82,16 +88,19 @@ export class ContractService {
   // Connection freshness tracking to avoid redundant RPC calls
   private static lastConnectionTest: number = 0;
   private static readonly CONNECTION_TTL = 30_000; // 30 seconds
+  // Track current RPC endpoint index for fallback rotation
+  private static currentEndpointIndex: number = 0;
+  // Track failed endpoints to avoid immediate retry
+  private static failedEndpoints: Map<string, number> = new Map();
+  private static readonly ENDPOINT_COOLDOWN = 60_000; // 1 minute cooldown for failed endpoints
 
   /**
-   * Get the contract configuration from environment variables
+   * Get the contract configuration from environment variables and network config
    */
   private static getConfig(): ContractConfig {
     const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
-    const rpcEndpoint =
-      process.env.NEXT_PUBLIC_RPC_ENDPOINT ||
-      "https://testnet-passet-hub-eth-rpc.polkadot.io";
-    const network = process.env.NEXT_PUBLIC_NETWORK || "passet-hub";
+    const network = getCurrentNetwork();
+    const rpcEndpoints = getRpcEndpoints();
 
     if (!contractAddress) {
       throw new Error(
@@ -99,11 +108,61 @@ export class ContractService {
       );
     }
 
+    if (rpcEndpoints.length === 0) {
+      throw new Error(
+        "No RPC endpoints configured. Please check your network configuration."
+      );
+    }
+
     return {
       contractAddress,
-      rpcEndpoint,
-      network,
+      rpcEndpoints,
+      network: network.name,
     };
+  }
+
+  /**
+   * Get the next available RPC endpoint, skipping recently failed ones
+   */
+  private static getNextEndpoint(): string {
+    const config = this.getConfig();
+    const now = Date.now();
+
+    // Clean up expired cooldowns
+    this.failedEndpoints.forEach((failTime, endpoint) => {
+      if (now - failTime > this.ENDPOINT_COOLDOWN) {
+        this.failedEndpoints.delete(endpoint);
+      }
+    });
+
+    // Find next available endpoint
+    for (let i = 0; i < config.rpcEndpoints.length; i++) {
+      const index = (this.currentEndpointIndex + i) % config.rpcEndpoints.length;
+      const endpoint = config.rpcEndpoints[index];
+
+      if (!this.failedEndpoints.has(endpoint)) {
+        this.currentEndpointIndex = index;
+        return endpoint;
+      }
+    }
+
+    // All endpoints failed recently, use the oldest failed one
+    this.currentEndpointIndex = 0;
+    return config.rpcEndpoints[0];
+  }
+
+  /**
+   * Mark an endpoint as failed
+   */
+  private static markEndpointFailed(endpoint: string): void {
+    this.failedEndpoints.set(endpoint, Date.now());
+    // Rotate to next endpoint
+    const config = this.getConfig();
+    this.currentEndpointIndex = (this.currentEndpointIndex + 1) % config.rpcEndpoints.length;
+    ErrorLogger.warn(LOG_CONTEXT, "RPC endpoint marked as failed", {
+      endpoint,
+      nextIndex: this.currentEndpointIndex,
+    });
   }
 
   /**
@@ -151,16 +210,18 @@ export class ContractService {
   /**
    * Establish a new connection to the RPC endpoint
    *
-   * Uses withRetry utility for consistent retry behavior with exponential backoff.
+   * Uses multi-RPC fallback for improved reliability.
+   * Automatically rotates to backup endpoints on failure.
    */
   private static async establishConnection(): Promise<ethers.JsonRpcProvider> {
     const config = this.getConfig();
+    const endpoint = this.getNextEndpoint();
 
     return withRetry(
       async () => {
         // Create provider with custom network config to disable ENS
         // Passet Hub doesn't support ENS, so we must completely disable ENS resolution
-        const network = new ethers.Network(config.network, 420420422);
+        const network = new ethers.Network(config.network, getCurrentNetwork().chainId);
 
         // Remove all ENS-related plugins from the network
         const ensPluginName = "org.ethers.plugins.network.Ens";
@@ -177,10 +238,11 @@ export class ContractService {
 
         ErrorLogger.debug(LOG_CONTEXT, "Creating provider with ENS disabled", {
           network: config.network,
+          endpoint,
         });
 
         const provider = new ethers.JsonRpcProvider(
-          config.rpcEndpoint,
+          endpoint,
           network,
           {
             staticNetwork: network, // Prevents network auto-detection
@@ -191,12 +253,13 @@ export class ContractService {
         await withTimeout(
           provider.getBlockNumber(),
           TIMEOUTS.BLOCKCHAIN_CONNECT,
-          `Ethereum RPC connection to ${config.rpcEndpoint}`
+          `Ethereum RPC connection to ${endpoint}`
         );
 
         ErrorLogger.info(LOG_CONTEXT, "Connected to RPC endpoint", {
           network: config.network,
-          endpoint: config.rpcEndpoint,
+          endpoint,
+          totalEndpoints: config.rpcEndpoints.length,
         });
 
         // Update connection freshness timestamp
@@ -215,14 +278,18 @@ export class ContractService {
           ErrorLogger.warn(LOG_CONTEXT, `RPC connection retry ${attempt}/3`, {
             error: error.message,
             nextDelayMs: delay,
-            endpoint: config.rpcEndpoint,
+            endpoint,
           });
+          // Mark current endpoint as failed and try next
+          this.markEndpointFailed(endpoint);
         },
       }
     ).catch((error) => {
+      this.markEndpointFailed(endpoint);
       this.notifyConnectionListeners(false);
       throw new Error(
         `Failed to connect to Ethereum RPC endpoint: ${error.message}. ` +
+        `Tried ${config.rpcEndpoints.length} endpoint(s). ` +
         `Please check your network connection and ensure the RPC endpoint is accessible.`
       );
     });

@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { useWallet } from "@/lib/wallet/WalletProvider";
+import { useAuth } from "@/hooks/useAuth";
 import { Message } from "@/types/contract";
 import { calculateMessageStatus } from "@/utils/dateUtils";
 import type { UnlockResult } from "@/lib/unlock";
@@ -50,7 +50,7 @@ const loadUnlockService = () => import("@/lib/unlock").then((mod) => mod.UnlockS
 export default function UnlockPage() {
   const router = useRouter();
   const params = useParams();
-  const { address, isConnected } = useWallet();
+  const { address, isConnected, login, isReady } = useAuth();
   const [message, setMessage] = useState<Message | null>(null);
   const [unlockResult, setUnlockResult] = useState<UnlockResult | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ export default function UnlockPage() {
   useEffect(() => {
     const loadMessage = async () => {
       if (!address || !isConnected) {
-        setError("Please connect your wallet to unlock messages");
+        setError("Please sign in to unlock messages");
         setLoading(false);
         return;
       }

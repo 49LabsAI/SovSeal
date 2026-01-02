@@ -4,8 +4,8 @@ import Link from "next/link";
 import { StorachaAuth } from "@/components/storage/StorachaAuth";
 import { ConnectionStatus } from "@/components/storage/ConnectionStatus";
 import { useStoracha } from "@/hooks/useStoracha";
-import { useWallet } from "@/lib/wallet/WalletProvider";
-import { WalletConnectButton } from "@/components/wallet/WalletConnectButton";
+import { useAuth } from "@/hooks/useAuth";
+import { AuthButton } from "@/components/auth";
 import {
   ArrowLeftIcon,
   CheckCircleIcon,
@@ -15,7 +15,7 @@ import {
 
 export default function SettingsPage() {
   const { authState, isReady, logout } = useStoracha();
-  const { isConnected: walletConnected } = useWallet();
+  const { isConnected } = useAuth();
 
   const handleResetConnection = () => {
     if (
@@ -40,23 +40,23 @@ export default function SettingsPage() {
         </Link>
         <h1 className="mb-2 font-display text-3xl font-bold">Settings</h1>
         <p className="text-dark-400">
-          Manage your wallet and storage connections
+          Manage your account and storage connections
         </p>
       </div>
 
       {/* Connection Status */}
       <ConnectionStatus className="mb-6" />
 
-      {/* Wallet Section */}
-      {!walletConnected && (
+      {/* Account Section */}
+      {!isConnected && (
         <div className="card-glass mb-6 p-6">
           <h2 className="mb-4 font-display text-xl font-semibold">
-            Wallet Connection
+            Account
           </h2>
           <p className="mb-4 text-sm text-dark-400">
-            Connect your wallet to interact with the blockchain
+            Sign in to access your messages and create new ones
           </p>
-          <WalletConnectButton />
+          <AuthButton />
         </div>
       )}
 

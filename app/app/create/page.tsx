@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useWallet } from "@/lib/wallet/WalletProvider";
+import { useAuth } from "@/hooks/useAuth";
 import { useStoracha } from "@/hooks/useStoracha";
 import { useNetworkCheck } from "@/hooks/useNetworkCheck";
 import { NetworkCheckModal } from "@/components/ui/NetworkCheckModal";
@@ -126,7 +126,7 @@ function ShareableLinkSection({ messageId }: { messageId: string }) {
 }
 
 export default function CreateMessagePage() {
-  const { address, isConnected, selectedAccount } = useWallet();
+  const { address, isConnected } = useAuth();
   const { isReady: isStorachaReady } = useStoracha();
   const { isCorrectNetwork, isChecking: isCheckingNetwork } = useNetworkCheck();
 
@@ -208,8 +208,8 @@ export default function CreateMessagePage() {
       alert("Please record or upload a message");
       return;
     }
-    if (!selectedAccount) {
-      alert("Please connect your wallet");
+    if (!isConnected || !address) {
+      alert("Please sign in first");
       return;
     }
 
@@ -231,12 +231,23 @@ export default function CreateMessagePage() {
       const unlockTimestamp = new Date(`${unlockDate}T${unlockTime}`).getTime();
       // Lazy load the message creation service for better code splitting
       const MessageCreationService = await loadMessageCreationService();
+      
+      // Create a WalletAccount-compatible object from Privy auth
+      const senderAccount = {
+        address: address!,
+        meta: {
+          name: "Privy Wallet",
+          source: "privy",
+        },
+        type: "ethereum" as const,
+      };
+      
       const creationResult = await MessageCreationService.createMessage(
         {
           mediaFile: mediaFile!,
           recipientAddress: recipientAddress.trim(),
           unlockTimestamp,
-          senderAccount: selectedAccount!,
+          senderAccount,
         },
         (progressUpdate) => setProgress(progressUpdate)
       );
@@ -278,10 +289,10 @@ export default function CreateMessagePage() {
             <ExclamationTriangleIcon className="h-8 w-8 text-brand-400" />
           </div>
           <h2 className="mb-4 font-display text-2xl font-bold">
-            Connect Your Wallet
+            Sign In Required
           </h2>
           <p className="mb-6 text-dark-400">
-            Connect your wallet to create time-locked messages.
+            Sign in to create time-locked messages.
           </p>
           <Link href="/app" className="btn-secondary">
             Go to Dashboard

@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { useWallet } from "@/lib/wallet/WalletProvider";
+import { useAuth } from "@/hooks/useAuth";
 import { useStoracha } from "@/hooks/useStoracha";
 import {
   InboxIcon,
   PaperAirplaneIcon,
   PlusIcon,
-  WalletIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 
@@ -51,27 +50,34 @@ type TabType = "sent" | "received";
 
 export default function AppPage() {
   const [activeTab, setActiveTab] = useState<TabType>("received");
-  const { isConnected, address, connect } = useWallet();
+  const { isConnected, address, login, isReady } = useAuth();
   const { isReady: isStorachaReady } = useStoracha();
-  const [isConnecting, setIsConnecting] = useState(false);
+  const loginAttempted = useRef(false);
 
-  const handleConnect = async () => {
-    setIsConnecting(true);
-    try {
-      await connect();
-    } catch (error) {
-      console.error("Failed to connect:", error);
-    } finally {
-      setIsConnecting(false);
+  // Auto-trigger Privy login when user lands on /app and isn't authenticated
+  useEffect(() => {
+    if (isReady && !isConnected && !loginAttempted.current) {
+      loginAttempted.current = true;
+      login();
     }
-  };
+  }, [isReady, isConnected, login]);
+
+  // Show loading state while Privy initializes or auth is in progress
+  if (!isReady || !isConnected) {
+    return (
+      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" />
+          <p className="text-dark-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-[calc(100vh-8rem)]">
-      {/* Main Content - Always visible but blurred when not connected */}
-      <div
-        className={`mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 ${!isConnected ? "pointer-events-none select-none blur-sm" : ""}`}
-      >
+      {/* Main Content */}
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -88,7 +94,7 @@ export default function AppPage() {
         </div>
 
         {/* Storage Warning */}
-        {isConnected && !isStorachaReady && (
+        {!isStorachaReady && (
           <div className="card-glass mb-6 border-yellow-500/30 bg-yellow-500/5 p-4">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -135,57 +141,13 @@ export default function AppPage() {
 
         {/* Messages Content */}
         <div className="card-glass p-6">
-          {isConnected ? (
-            <>
-              {activeTab === "received" && (
-                <ReceivedMessages address={address!} />
-              )}
-              {activeTab === "sent" && <SentMessages address={address!} />}
-            </>
-          ) : (
-            // Placeholder content when not connected
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="h-24 animate-pulse rounded-lg bg-dark-800/50"
-                />
-              ))}
-            </div>
-          )}
+          {activeTab === "received" && <ReceivedMessages address={address!} />}
+          {activeTab === "sent" && <SentMessages address={address!} />}
         </div>
 
         {/* Key Backup Warning */}
-        {isConnected && <KeyBackupWarning />}
+        <KeyBackupWarning />
       </div>
-
-      {/* Wallet Connection Overlay */}
-      {!isConnected && (
-        <div className="absolute inset-0 flex items-center justify-center bg-dark-950/60 backdrop-blur-sm">
-          <div className="card-glass mx-4 max-w-md animate-scale-in p-8 text-center">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-brand-500/20 bg-brand-500/10">
-              <WalletIcon className="h-8 w-8 text-brand-400" />
-            </div>
-            <h2 className="mb-3 font-display text-2xl font-bold">
-              Connect Your Wallet
-            </h2>
-            <p className="mb-6 text-dark-400">
-              Connect your Talisman or MetaMask wallet to view and create
-              time-locked messages.
-            </p>
-            <button
-              onClick={handleConnect}
-              disabled={isConnecting}
-              className="btn-primary mb-4 w-full disabled:opacity-50"
-            >
-              {isConnecting ? "Connecting..." : "Connect Wallet"}
-            </button>
-            <p className="text-xs text-dark-500">
-              Use an Ethereum account (0x...) for Passet Hub compatibility
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

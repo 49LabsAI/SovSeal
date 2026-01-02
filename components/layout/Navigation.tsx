@@ -7,16 +7,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { WalletConnectButton } from "@/components/wallet/WalletConnectButton";
-import { useWallet } from "@/lib/wallet/WalletProvider";
+import dynamic from "next/dynamic";
+
+// Lazy load AuthButton to avoid pulling in Privy on initial load
+const AuthButton = dynamic(
+  () => import("@/components/auth/AuthButton").then((mod) => ({ default: mod.AuthButton })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-9 w-20 animate-pulse rounded-lg bg-dark-800/50" />
+    ),
+  }
+);
 
 export function Navigation() {
   const pathname = usePathname();
-  const { isConnected } = useWallet();
 
   const navLinks = [
     { href: "/app", label: "Messages" },
-    { href: "/app/create", label: "Create", requiresWallet: true },
+    { href: "/app/create", label: "Create" },
     { href: "/app/settings", label: "Settings" },
   ];
 
@@ -52,7 +61,6 @@ export function Navigation() {
               const isActive =
                 pathname === link.href ||
                 (link.href !== "/app" && pathname.startsWith(link.href));
-              const isDisabled = link.requiresWallet && !isConnected;
 
               return (
                 <Link
@@ -61,11 +69,8 @@ export function Navigation() {
                   className={`rounded-lg px-2 py-2 text-xs font-medium transition-all sm:px-3 sm:text-sm ${
                     isActive
                       ? "bg-brand-500/10 text-brand-400"
-                      : isDisabled
-                        ? "pointer-events-none cursor-not-allowed text-dark-600"
-                        : "text-dark-300 hover:bg-dark-800/50 hover:text-dark-100"
+                      : "text-dark-300 hover:bg-dark-800/50 hover:text-dark-100"
                   }`}
-                  aria-disabled={isDisabled}
                   aria-current={isActive ? "page" : undefined}
                 >
                   {link.label}
@@ -73,9 +78,9 @@ export function Navigation() {
               );
             })}
 
-            {/* Wallet Connect Button */}
+            {/* Auth Button (Privy) - lazy loaded */}
             <div className="ml-2 sm:ml-4">
-              <WalletConnectButton />
+              <AuthButton />
             </div>
           </div>
         </div>

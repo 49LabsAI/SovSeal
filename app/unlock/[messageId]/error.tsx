@@ -23,15 +23,15 @@ export default function UnlockMessageError({
   const getErrorMessage = () => {
     const message = error.message.toLowerCase();
 
-    if (message.includes("wallet") || message.includes("extension")) {
+    if (message.includes("wallet") || message.includes("extension") || message.includes("privy") || message.includes("auth")) {
       return {
-        title: "Wallet Connection Error",
+        title: "Authentication Error",
         description:
-          "There was a problem accessing your wallet to decrypt the message.",
+          "There was a problem accessing your account to decrypt the message.",
         suggestions: [
-          "Make sure Talisman extension is installed and unlocked",
-          "Ensure you are connected with the recipient account",
-          "Try disconnecting and reconnecting your wallet",
+          "Make sure you are signed in with the correct account",
+          "Ensure you are connected with the recipient address",
+          "Try signing out and signing back in",
         ],
       };
     }
@@ -146,13 +146,13 @@ export default function UnlockMessageError({
   const errorInfo = getErrorMessage();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50 p-4">
-      <div className="w-full max-w-2xl rounded-lg bg-white p-8 shadow-xl">
+    <div className="flex min-h-screen items-center justify-center bg-dark-950 p-4">
+      <div className="card-glass w-full max-w-2xl p-8">
         {/* Error Icon */}
         <div className="mb-6 flex justify-center">
-          <div className="rounded-full bg-red-100 p-4">
+          <div className="rounded-full bg-red-500/10 p-4">
             <svg
-              className="h-12 w-12 text-red-600"
+              className="h-12 w-12 text-red-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -168,34 +168,34 @@ export default function UnlockMessageError({
         </div>
 
         {/* Error Title */}
-        <h1 className="mb-2 text-center text-2xl font-bold text-gray-900">
+        <h1 className="mb-2 text-center font-display text-2xl font-bold text-dark-100">
           {errorInfo.title}
         </h1>
 
         {/* Error Description */}
-        <p className="mb-6 text-center text-gray-600">
+        <p className="mb-6 text-center text-dark-400">
           {errorInfo.description}
         </p>
 
         {/* Error Details (collapsible) */}
-        <details className="mb-6 rounded-lg bg-gray-50 p-4">
-          <summary className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
+        <details className="mb-6 rounded-lg border border-dark-800 bg-dark-900/50 p-4">
+          <summary className="cursor-pointer text-sm font-medium text-dark-300 hover:text-dark-200">
             Technical Details
           </summary>
-          <div className="mt-3 max-h-40 overflow-auto rounded border border-gray-200 bg-white p-3 font-mono text-sm text-gray-600">
+          <div className="mt-3 max-h-40 overflow-auto rounded bg-dark-950 p-3 font-mono text-sm text-dark-500">
             {error.message}
           </div>
         </details>
 
         {/* Suggestions */}
-        <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <h3 className="mb-2 text-sm font-semibold text-blue-900">
+        <div className="mb-6 rounded-lg border border-brand-500/20 bg-brand-500/5 p-4">
+          <h3 className="mb-2 text-sm font-semibold text-brand-400">
             What you can try:
           </h3>
-          <ul className="space-y-1 text-sm text-blue-800">
+          <ul className="space-y-1 text-sm text-dark-300">
             {errorInfo.suggestions.map((suggestion, index) => (
               <li key={index} className="flex items-start">
-                <span className="mr-2">•</span>
+                <span className="mr-2 text-brand-400">•</span>
                 <span>{suggestion}</span>
               </li>
             ))}
@@ -206,13 +206,13 @@ export default function UnlockMessageError({
         <div className="flex flex-col gap-3 sm:flex-row">
           <button
             onClick={reset}
-            className="flex-1 rounded-lg bg-purple-600 px-6 py-3 font-medium text-white transition-colors hover:bg-purple-700"
+            className="btn-primary flex-1 py-3"
           >
             Try Again
           </button>
           <a
             href="/dashboard"
-            className="flex-1 rounded-lg bg-gray-200 px-6 py-3 text-center font-medium text-gray-700 transition-colors hover:bg-gray-300"
+            className="flex-1 rounded-lg border border-dark-700 bg-dark-800/50 px-6 py-3 text-center font-medium text-dark-300 transition-colors hover:bg-dark-800 hover:text-dark-100"
           >
             Back to Dashboard
           </a>
@@ -220,13 +220,13 @@ export default function UnlockMessageError({
 
         {/* Help Link */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-dark-500">
             Need help?{" "}
             <a
               href="https://github.com/your-repo/issues"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-purple-600 hover:text-purple-700"
+              className="font-medium text-brand-400 hover:text-brand-300"
             >
               Report this issue
             </a>

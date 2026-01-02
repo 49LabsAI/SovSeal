@@ -3,11 +3,11 @@
 /**
  * Connection Status Component
  *
- * Shows unified status of wallet and Storacha connections
+ * Shows unified status of account and Storacha connections
  * Helps users understand what's connected and what needs attention
  */
 
-import { useWallet } from "@/lib/wallet/WalletProvider";
+import { useAuth } from "@/hooks/useAuth";
 import { useStoracha } from "@/hooks/useStoracha";
 
 interface ConnectionStatusProps {
@@ -15,10 +15,10 @@ interface ConnectionStatusProps {
 }
 
 export function ConnectionStatus({ className = "" }: ConnectionStatusProps) {
-  const { isConnected: walletConnected, address } = useWallet();
+  const { isConnected, address } = useAuth();
   const { authState, isReady } = useStoracha();
 
-  const walletStatus = walletConnected ? "connected" : "disconnected";
+  const accountStatus = isConnected ? "connected" : "disconnected";
   const storachaStatus = isReady
     ? "ready"
     : authState.isAuthenticated
@@ -34,23 +34,23 @@ export function ConnectionStatus({ className = "" }: ConnectionStatusProps) {
       </h3>
 
       <div className="space-y-2">
-        {/* Wallet Status */}
+        {/* Account Status */}
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <div
               className={`mr-2 h-2 w-2 rounded-full ${
-                walletStatus === "connected" ? "bg-green-500" : "bg-gray-600"
+                accountStatus === "connected" ? "bg-green-500" : "bg-gray-600"
               }`}
             />
-            <span className="text-sm text-gray-300">Wallet</span>
+            <span className="text-sm text-gray-300">Account</span>
           </div>
           <div className="text-xs">
-            {walletStatus === "connected" ? (
+            {accountStatus === "connected" ? (
               <span className="font-medium text-green-400">
                 {address?.slice(0, 6)}...{address?.slice(-4)}
               </span>
             ) : (
-              <span className="text-gray-500">Not connected</span>
+              <span className="text-gray-500">Not signed in</span>
             )}
           </div>
         </div>
@@ -85,12 +85,12 @@ export function ConnectionStatus({ className = "" }: ConnectionStatusProps) {
 
       {/* Overall Status Message */}
       <div className="mt-3 border-t border-gray-700 pt-3">
-        {walletConnected && isReady ? (
+        {isConnected && isReady ? (
           <p className="text-xs text-green-400">✓ All systems ready</p>
         ) : (
           <p className="text-xs text-gray-400">
-            {!walletConnected && "Connect wallet to continue"}
-            {walletConnected &&
+            {!isConnected && "Sign in to continue"}
+            {isConnected &&
               !isReady &&
               "Complete storage setup to upload files"}
           </p>

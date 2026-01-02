@@ -176,8 +176,7 @@ export function MarketingPageContent() {
               Ready to send a message to the future?
             </h2>
             <p className="mb-8 text-lg text-dark-400">
-              Connect your wallet and create your first time-locked message in
-              minutes.
+              Sign in and create your first time-locked message in minutes.
             </p>
             <Link
               href="/app"

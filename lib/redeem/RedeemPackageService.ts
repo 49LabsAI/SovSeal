@@ -57,7 +57,7 @@ export class RedeemPackageService {
    * @param messageHash - SHA-256 hash of encrypted message
    * @param unlockTimestamp - When the message can be unlocked
    * @param sender - Sender's wallet address
-   * @param expirationDays - Days until package expires (default: 30)
+   * @param expirationDays - Days until package expires (default: 365 for legacy use cases)
    * @returns Redeem package object
    */
   static createRedeemPackage(
@@ -66,7 +66,7 @@ export class RedeemPackageService {
     messageHash: string,
     unlockTimestamp: number,
     sender: string,
-    expirationDays: number = 30
+    expirationDays: number = 365
   ): RedeemPackage {
     const expiresAt = Date.now() + expirationDays * 24 * 60 * 60 * 1000;
 

@@ -1,4 +1,4 @@
-import { WalletProvider } from "@/lib/wallet/WalletProvider";
+import { AuthProviders } from "@/components/providers";
 import { ToastProvider } from "@/components/ui";
 
 export default function UnlockLayout({
@@ -8,7 +8,7 @@ export default function UnlockLayout({
 }) {
   return (
     <ToastProvider>
-      <WalletProvider>{children}</WalletProvider>
+      <AuthProviders>{children}</AuthProviders>
     </ToastProvider>
   );
 }
