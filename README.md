@@ -10,6 +10,36 @@
 
 SovSeal (Sovereign Seal) is an institutional-grade protocol for digital legacy and time-locked media. Create encrypted vaults using client-side encryption, IPFS storage, and Polkadot blockchain — selling Admissibility, Security, and Finality.
 
+## 📦 Open Core Packages
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636.svg)](https://soliditylang.org/)
+
+SovSeal follows the [Open Core](https://en.wikipedia.org/wiki/Open-core_model) model. The protocol standards are open source (Apache 2.0), while the managed platform remains proprietary.
+
+| Package | Description | License |
+|---------|-------------|---------|
+| [@sovseal/contracts](./packages/contracts) | Smart contracts (SovSeal.sol, SovSealRecovery.sol) | Apache 2.0 |
+| [@sovseal/sdk](./packages/sdk) | TypeScript SDK for protocol integration | Apache 2.0 |
+
+### Quick Start for Developers
+
+```bash
+npm install @sovseal/sdk ethers
+```
+
+```typescript
+import { SovSealClient, CryptoService } from '@sovseal/sdk';
+
+const client = new SovSealClient({
+  rpcUrl: 'https://polkadot-asset-hub-eth-rpc.polkadot.io',
+  contractAddress: '0x...',
+});
+
+const messages = await client.getReceivedMessages('0x...');
+```
+
 ## 🎯 Overview
 
 SovSeal is a privacy-first protocol that enables secure, legally-admissible digital legacy management. Record or upload audio/video content, encrypt it locally in your browser, store it on decentralized IPFS, and set a future unlock time enforced by the Polkadot blockchain. No corporation, server, or third party can access your content before the unlock time—it's guaranteed by cryptography and blockchain consensus.
